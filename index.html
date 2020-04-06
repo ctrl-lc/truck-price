@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#ffc40d">
+    <meta name="theme-color" content="#ffffff">
+    <title>Поиск лучших цен на тягачи и полуприцепы</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" type="text/javascript"></script>
+    <script src="js/google-sheets-html.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style type="text/css">
+        .num {
+            text-align: right;
+        }
+        
+        .fromPaper div {
+            margin-bottom: 12pt
+        }
+        
+        .fromPaper h1 {
+            margin-top: 24pt;
+            font-size: 1.8rem;
+        }
+        
+        .fromPaper h2 {
+            margin-top: 12pt;
+            font-size: 1.3rem;
+        }
+        
+        .form-check-label {
+            white-space: nowrap;
+        }
+        
+        #status {
+            font-style: italic;
+        }
+    </style>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m, e, t, r, i, k, a) {
+            m[i] = m[i] || function() {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+        (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(61556533, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/61556533" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+    <meta name="yandex-verification" content="13bcc2171074cd28" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162476046-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-162476046-1');
+    </script>
+
+    <!-- jivosite code -->
+    <script src="https://code-ya.jivosite.com/widget/eV5AoUco3H" async></script>
+
+</head>
+
+<body>
+
+    <div class="bg-light py-4 px-3 mb-4">
+        <h1 class="display-5">
+            <span class="bg-warning text-white px-2">Truck Price</span>
+            <span class="d-none d-lg-inline">Лучшие цены на грузовики</span>
+        </h1>
+        <p class="text-muted">Найдите самые выгодные объявления о продаже тягачей и полуприцепов</p>
+    </div>
+    <form>
+        <div class="card mx-3 my-3">
+            <div class="card-body">
+                <h2 class="card-title">Выберите параметры</h2>
+                <p><small class="text-muted">Уберите все галочки в группе, чтобы снять фильтрацию по этому признаку</small></p>
+                <div class="container">
+                    <div class="row mb-4">
+                        <div class="col mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="VehicleType" onclick="trucksClicked()" value=1 checked>
+                                <label class="form-check-label">Тягачи</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="VehicleType" onclick="trailersClicked()" value=2>
+                                <label class="form-check-label">Рефрижераторы</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="VehicleType" onclick="trailersClicked()" value=3>
+                                <label class="form-check-label">Шторные</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="VehicleType" onclick="trailersClicked()" value=4>
+                                <label class="form-check-label">Бортовые</label>
+                            </div>
+                        </div>
+
+                        <div class="col mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="year2019">
+                                <label class="form-check-label">2019 г.в.</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="year2018">
+                                <label class="form-check-label">2018 г.в.</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="year2017">
+                                <label class="form-check-label">2017 г.в.</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="year2016">
+                                <label class="form-check-label">2016 г.в.</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="year2015">
+                                <label class="form-check-label">2015 г.в.</label>
+                            </div>
+                        </div>
+
+                        <div class="col mb-4 disableForTrailers">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brandSCANIA">
+                                <label class="form-check-label">Scania</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brandVOLVO">
+                                <label class="form-check-label">Volvo</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brandMAN">
+                                <label class="form-check-label">MAN</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brandDAF">
+                                <label class="form-check-label">DAF</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brandMERCEDES">
+                                <label class="form-check-label">Mercedes-Benz</label>
+                            </div>
+                        </div>
+
+                        <div class="col mb-4 disableForTrailers">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brandIVECO">
+                                <label class="form-check-label">Iveco</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brandRENAULT">
+                                <label class="form-check-label">Renault</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brandKAMAZ">
+                                <label class="form-check-label">КамАЗ</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="brandMAZ">
+                                <label class="form-check-label">МАЗ</label>
+                            </div>
+                        </div>
+
+                        <div class="col mb-4 disableForTrailers">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="formula4x2">
+                                <label class="form-check-label">4x2</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="formula6x2">
+                                <label class="form-check-label">6x2</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="formula6x4">
+                                <label class="form-check-label">6x4</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="formula6x6">
+                                <label class="form-check-label">6x6</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="formula8x8">
+                                <label class="form-check-label">8x8</label>
+                            </div>
+                        </div>
+
+                        <div class="col mb-4 disableForTrailers">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="beds1">
+                                <label class="form-check-label">1 спальное место</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="beds2">
+                                <label class="form-check-label">2 спальных места</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <button class="btn btn-primary my-1">Поиск</button>
+                <a class="btn btn-secondary my-1" href="#" role="button" data-toggle="modal" data-target="#subscribe">
+                    Подписаться
+                </a>
+                <a class="btn btn-outline-secondary my-1 float-sm-right" href="#" role="button" onclick="copyUrlToClipboard()">
+                    Скопировать ссылку
+                </a>
+            </div>
+        </div>
+
+        <!-- Модельное окно подписки на обновления -->
+        <div class="modal fade" id="subscribe" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Подписаться на новые объявления</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="name@example.com">
+                            <small id="emailHelp" class="form-text text-muted">Введите e-mail, на который каждое утро будут приходить новые объявления по выбранному вами фильтру.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Подписаться</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="card mx-3 my-3">
+        <div class="card-body">
+            <h2 class="mb-3 card-title"><span id="rowNo">20</span> самых выгодных объявлений</h2>
+            <p><small id="listPrompt" class="text-muted"></small></p>
+            <div id="table" class="table">
+                <p id="status">Подождите, ищем и загружаем объявления...</p>
+            </div>
+        </div>
+    </div>
+    <div class="card mx-3 my-3">
+        <div class="card-body">
+            <h2 class="mb-3 card-title">Как это работает?</h2>
+            <div class="fromPaper">
+                <!-- Вставить текст из Paper сюда -->
+
+                <div><span>Truck Price позволяет найти выгодные объявления о продаже грузовой техники.</span></div>
+                <div><span>Мы собираем в интернете объявления о продаже грузовой техники, оцениваем справедливую цену на этих объявлениях и вычисляем </span><span><b>выгоду</b></span><span> - разницу между справедливой ценой и ценой, установленной в объявлении.</span></div>
+                <div>
+                    <h1><span>Как пользоваться</span></h1>
+                </div>
+                <ol>
+                    <li><span>Выберите параметры фильтрации и нажмите</span><span>&ldquo;Поиск&rdquo;.</span></li>
+                    <li><span>В появившемся списке объявлений кликните на строку, чтобы открыть объявление и увидеть фотографии, подробное описание и контактные данные.</span></li>
+                </ol>
+                <div>
+                    <h1><span>Зачем это нужно?</span></h1>
+                </div>
+                <div class="row">
+                    <div class="col-lg">
+                        <h2><span>Сокращение трудозатрат</span></h2>
+                        <div><span>При анализе цен на грузовую технику очень сложно определить, какая цена хорошая. При оценке используется много параметров - год выпуска, пробег, мощность двигателя, количество спальных мест, тип коробки передач и др. Если пытаться анализировать все их вручную, то вы потратите уйму времени и, возможно, все равно что-то упустите из виду.</span></div>
+                        <div><span>А мы помогаем вам найти лучшие объявления всего в несколько кликов.</span></div>
+                    </div>
+                    <div class="col-lg">
+                        <h2><span>Быстрота реакции</span></h2>
+                        <div><span>Ежедневно тысячи людей следят за объявлениями о продаже авто, поэтому объявления с лучшими ценами очень сложно поймать. Как только техника по хорошим ценам появляется на рынке, ее очень быстро выкупают те, кто занимается закупками техники профессионально. Теперь у вас есть шанс побороться с ними на равных - вы получаете мгновенный доступ к лучшим ценам в тот же день, когда было размещено объявление.&nbsp;</span></div>
+                    </div>
+                    <div class="col-lg">
+                        <h2><span>Экономия</span></h2>
+                        <div><span>Выгода по некоторым объявлениям превышает 1 000 000 руб.&nbsp;</span></div>
+                        <div><span>Конечно, есть шанс попасть на объявления с ценой, которая поставлена для приманки, но не подтверждается при более серьезном разговоре. Бывают случаи, когда параметры техники проставлены неверно, что ведет к неверной оценке.&nbsp;</span></div>
+                        <div><span>Но в большинстве случаев объявления актуальны и выгода, которую мы рассчитываем, реально.&nbsp;</span></div>
+                    </div>
+                </div>
+                <div>
+                    <h1><span>Оценка выгоды</span></h1>
+                </div>
+                <div>
+                    <h2><span>Как вы рассчитываете справедливую цену и выгоду?</span></h2>
+                </div>
+                <div><span>Мы используем машинное обучение, чтобы построить систему оценки справедливой цены. При оценке мы смотрим на все параметры объявления:</span></div>
+                <ul>
+                    <li><span>Тип ТС</span></li>
+                    <li><span>Марка</span></li>
+                    <li><span>Год выпуска</span></li>
+                    <li><span>Пробег</span></li>
+                    <li><span>Колесная формула</span></li>
+                    <li><span>Тип коробки передач</span></li>
+                    <li><span>Мощность двигателя</span></li>
+                    <li><span>Количество спальных мест</span></li>
+                </ul>
+                <div><span>После анализа этих данных, каждое объявление получает оценку справедливой цены. После ее сравнения с ценой, которую владелец поставил на объявлении, рассчитывается выгода, которую вы получаете при приобретении этой техники.&nbsp;</span></div>
+                <div>
+                    <h2><span>Сейчас цены пойдут вверх - насколько актуальна будет ваша оценка?</span></h2>
+                </div>
+                <div><span>Мы калибруем нашу систему каждый месяц, чтобы учесть движение рыночных цен.</span></div>
+                <div>
+                    <h1><span>Объявления</span></h1>
+                </div>
+                <div>
+                    <h2><span>Какую технику я смогу у вас найти?</span></h2>
+                </div>
+                <div><span>Мы следим за объявлениями на седельные тягачи и полуприцепы для промтоваров</span><span>(рефрижераторы,</span><span> шторные, бортовые) - от 2015 года выпуска.</span></div>
+                <div>
+                    <h2><span>Насколько актуальны объявления?</span></h2>
+                </div>
+                <div><span>Мы показываем объявления, актуальные на текущую дату. Если объявление было снято продавцом, оно исчезает из нашего списка. Список объявлений обновляется каждый день.</span></div>
+                <div>
+                    <h2><span>Почему я вижу пустые значения?</span></h2>
+                </div>
+                <div><span>Это значит, что владелец объявления не заполнил это поле.</span></div>
+                <div>
+                    <h2><span>Если выгода отрицательная, что это означает?</span></h2>
+                </div>
+                <div><span>Это значит, что мы считаем, что транспортное средство должно стоить меньше, чем та цена, которую запросил автор объявления.</span></div>
+                <!-- Конец области вставки -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js " integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n " crossorigin="anonymous "></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js " integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo " crossorigin="anonymous "></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js " integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6 " crossorigin="anonymous "></script>
+
+</body>
+
+</html>
