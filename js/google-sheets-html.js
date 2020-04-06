@@ -127,6 +127,7 @@ function requestData() {
 
     queryString = `SELECT * ${filter} LIMIT 20`
     console.log(queryString);
+    firebase.analytics().logEvent('search', { 'search_term': queryString });
     query.setQuery(queryString);
     query.send(handleQueryResponse);
 }
@@ -178,20 +179,20 @@ function drawData() {
             d.className = "col"
             var s = `
                 <div class="card mx-2 my-2">
-                <div class="card-body" onclick=" { 
-                    ym(61556533, 'reachGoal', 'table_click')
-                    ga('send', 'event', { 
-                        eventCategory: 'Outbound Link', 
-                        eventAction: 'click', 
-                        eventLabel: event.target.href 
-                    }); 
-                    if (window.innerWidth > 480)
-                        window.open('${r.url}', '_blank')
-                    else
-                        location.href = '${r.url}'}"> 
+                <div class="card-body"> 
                 
                     <h3 class="card-title">
-                        <a href='${r.url}'>
+                        <a href='${r.url}' 
+                        ${window.innerWidth > 480? "target=_blank": ""}
+                        onclick=" { 
+                            ym(61556533, 'reachGoal', 'table_click')
+                            ga('send', 'event', { 
+                                eventCategory: 'Outbound Link', 
+                                eventAction: 'click', 
+                                eventLabel: event.target.href 
+                            }); 
+                            firebase.analytics().logEvent('view_item', {'item': '${r.url}'});
+                        }">
                             ${r.make} ${r.model}
                         </a>
                     </h3>
