@@ -127,7 +127,7 @@ function requestData() {
 
     queryString = `SELECT * ${filter} LIMIT 20`
     console.log(queryString);
-    firebase.analytics().logEvent('search', { 'search_term': queryString });
+    firebase.analytics().logEvent('search', { search_term: queryString });
     query.setQuery(queryString);
     query.send(handleQueryResponse);
 }
@@ -191,7 +191,7 @@ function drawData() {
                                 eventAction: 'click', 
                                 eventLabel: event.target.href 
                             }); 
-                            firebase.analytics().logEvent('view_item', {'item': '${r.url}'});
+                            firebase.analytics().logEvent('view_item', {item_location_id: '${r.url}'});
                         }">
                             ${r.make} ${r.model}
                         </a>
