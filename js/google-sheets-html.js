@@ -60,13 +60,15 @@ const schema = [{
 ]
 
 var visualization;
-var selectedType
-var data
+var selectedType;
+var data;
+var blacklistedAds;
 
 google.load('visualization', '1', {
     packages: ['table']
 });
 google.setOnLoadCallback(requestData);
+retrieveBlacklistedAds();
 
 function requestData() {
 
@@ -125,7 +127,7 @@ function requestData() {
         }
     });
 
-    queryString = `SELECT * ${filter} LIMIT 20`
+    queryString = `SELECT * ${filter} LIMIT 40`
     console.log(queryString);
     firebase.analytics().logEvent('search', { search_term: queryString });
     query.setQuery(queryString);
@@ -145,6 +147,8 @@ function drawData() {
 
     redrawAt = 0;
 
+    if ((!blacklistedAds) || (!data)) return;
+
     if (data.getNumberOfRows() > 0) {
         // Create a formatter.
         // This example uses object literal notation to define the options.
@@ -154,12 +158,13 @@ function drawData() {
 
         for (var i = 0; i < data.getNumberOfColumns(); i++)
             if (data.getColumnType(i) == "number")
-                delims.format(data, i)
+                delims.format(data, i);
 
             // загоняем в таблу
 
         var dt = [];
-        for (var r = 0; r < data.getNumberOfRows(); r++) {
+        for (var r = 0;
+            (r < data.getNumberOfRows()) && (dt.length < 20); r++) {
             var row = new Object;
             for (var c = 0; c < data.getNumberOfColumns(); c++) {
                 try {
@@ -170,7 +175,8 @@ function drawData() {
                 }
 
             }
-            dt.push(row)
+            if (!blacklistedAds.find(e => row.url == e))
+                dt.push(row);
         }
 
         var t = $("#table")[0];
@@ -244,6 +250,7 @@ function drawData() {
             d.innerHTML = s
             t.appendChild(d);
         })
+
         t.innerHTML = `
                 <div class="row">
                     ${t.innerHTML}
@@ -254,7 +261,7 @@ function drawData() {
 
         //поправляем в заголовке кол-во объявлений
 
-        $("#rowNo")[0].innerHTML = String(data.getNumberOfRows())
+        $("#rowNo")[0].innerHTML = String(dt.length)
 
     } else {
         $("#status")[0].innerHTML =
@@ -341,4 +348,18 @@ function filterChanged() {
         if (Date.now() > redrawAt)
             $("#form").submit();
     }, 5000)
+}
+
+function retrieveBlacklistedAds() {
+    db.collection("blacklisted_ads")
+        .get()
+        .then(function(querySnapshot) {
+            blacklistedAds = [];
+            querySnapshot.forEach((doc) =>
+                blacklistedAds.push(doc.data().url))
+            drawData();
+        })
+        .catch(function(error) {
+            console.log("Error getting documents: ", error);
+        });
 }
