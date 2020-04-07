@@ -332,3 +332,11 @@ function subscribe() {
 
         })
 }
+
+function filterChanged() {
+    d = Date.now()
+    setTimeout(function() {
+        if (Date.now() > d)
+            $("#form").submit();
+    }, 5000)
+}

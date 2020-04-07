@@ -83,12 +83,12 @@
         </h1>
         <p class="text-muted">Найдите самые выгодные объявления о продаже тягачей и полуприцепов</p>
     </div>
-    <form>
+    <form id="form">
         <div class="card mx-3 my-3">
             <div class="card-body">
                 <h2 class="card-title">Выберите параметры</h2>
                 <p><small class="text-muted">Уберите все галочки в группе, чтобы снять фильтрацию по этому признаку</small></p>
-                <div class="container">
+                <div class="container" onchange="filterChanged()">
                     <div class="row mb-4">
                         <div class="col mb-4">
                             <div class="form-check">
