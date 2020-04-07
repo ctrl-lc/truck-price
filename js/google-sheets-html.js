@@ -309,3 +309,24 @@ function desc(v, a) {
     return !v ? "" :
         `<span class="mx-1 px-1 bg-light text-nowrap">${a == "" ? v : v + " " + a}</span>`
 }
+
+function subscribe() {
+
+    var e = $('#email').get()[0].value
+    var t = getUrlVars()
+    var d = new Date()
+
+    db.collection("subscribers").add({
+            date: Date.now(),
+            dateString: d.toGMTString(),
+            email: e,
+            terms: t
+        })
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+
+        })
+}

@@ -92,7 +92,7 @@
                     <div class="row mb-4">
                         <div class="col mb-4">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="VehicleType" onclick="trucksClicked()" value=1 checked>
+                                <input class="form-check-input" type="radio" name="VehicleType" onclick="trucksClicked()" value=1>
                                 <label class="form-check-label">Тягачи</label>
                             </div>
                             <div class="form-check">
@@ -238,7 +238,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                        <button type="submit" class="btn btn-primary">Подписаться</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="subscribe()">
+                            Подписаться
+                        </button>
                     </div>
                 </div>
             </div>
@@ -340,6 +342,7 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
 
     <script>
         // Your web app's Firebase configuration
@@ -356,6 +359,7 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         firebase.analytics();
+        var db = firebase.firestore();
     </script>
 
 
