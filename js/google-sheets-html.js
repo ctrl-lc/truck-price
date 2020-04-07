@@ -334,7 +334,7 @@ function subscribe() {
 }
 
 function filterChanged() {
-    d = Date.now()
+    d = Date.now() + 5000
     setTimeout(function() {
         if (Date.now() > d)
             $("#form").submit();
