@@ -143,6 +143,8 @@ function handleQueryResponse(response) {
 
 function drawData() {
 
+    redrawAt = 0;
+
     if (data.getNumberOfRows() > 0) {
         // Create a formatter.
         // This example uses object literal notation to define the options.
@@ -334,9 +336,9 @@ function subscribe() {
 }
 
 function filterChanged() {
-    d = Date.now() + 5000
+    redrawAt = Date.now() + 4999;
     setTimeout(function() {
-        if (Date.now() > d)
+        if (Date.now() > redrawAt)
             $("#form").submit();
     }, 5000)
 }
