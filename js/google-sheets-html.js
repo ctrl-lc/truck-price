@@ -54,7 +54,8 @@ const schema = [{
     { name: "recommendation", gsName: "Рекомендация" },
     { name: "minDownpayment", gsName: "Мин. аванс" },
     { name: "leasePayment", gsName: "Лизинговый платеж 0% / 48 мес." },
-    { name: "gear", gsName: "Тип КПП" }
+    { name: "gear", gsName: "Тип КПП" },
+    { name: "vat", gsName: "Прогноз по НДС" }
 
 
 ]

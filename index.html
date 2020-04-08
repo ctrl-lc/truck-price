@@ -313,22 +313,28 @@
                                     </small>
                                 </div>
 
-                                <div class="my-2 px-1 ">
-                                    <div class="card-text text-nowrap my-2">
-                                        <b class="text-muted">Выгода: </b>
-                                        <b><span class="p-1 text-white" v-bind:class="Number(r.benefit.replace(/[\,\s]/g, '')) > 0 ?
+                                <table class="table table-borderless table-sm my-3 text-nowrap">
+                                    <tr>
+                                        <td>Рыночная цена</td>
+                                        <td class="num">{{ r.valuation }} р.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>В объявлении</td>
+                                        <td class="num">{{ r.supplierPrice }} р.</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row" class="align-middle">Выгода</th>
+                                        <td class="num py-2"><b><span v-bind:class="Number(r.benefit.replace(/[\,\s]/g, '')) > 0 ?
                                             'p-1 text-white bg-warning': 'p-1 text-white bg-danger'">
                                              {{ r.benefit }} р.
-                                        </span></b>
-                                    </div>
-                                    <div class="card-text text-nowrap">
-                                        <b class="text-muted">Цена: </b>{{ r.supplierPrice }} р.
-                                    </div>
-                                    <div class="card-text text-nowrap" v-if="r.leasePayment">
-                                        <b class="text-muted">Лизинг: </b>{{ r.leasePayment }} р./мес.
-                                    </div>
+                                        </span></b></td>
+                                    </tr>
+                                </table>
+                                <div class="card-footer">
+                                    <span class="badge badge-success" v-if="r.vat == 'ОК'">Цена с НДС</span>
+                                    <span class="badge badge-danger" v-if="r.vat != 'ОК'">НДС?</span>
+                                    <a class="badge badge-info" v-if="r.leasePayment" href="https://lp.ctrl.lc/usedtrucks">Лизинг: {{ r.leasePayment }} р./мес.</a>
                                 </div>
-
                             </div>
                         </div>
 
