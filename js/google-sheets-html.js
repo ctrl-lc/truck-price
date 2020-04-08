@@ -72,6 +72,8 @@ retrieveBlacklistedAds();
 
 function requestData() {
 
+    redrawAt = Date() + 5000; // запретить перерисовку из filterChanged на 5 секундн
+
     //init filters from URL
 
     var s = location.search.match(/VehicleType=(\d*)/) // ищем параметр VehicleType
@@ -144,8 +146,6 @@ function handleQueryResponse(response) {
 }
 
 function drawData() {
-
-    redrawAt = 0;
 
     if ((!blacklistedAds) || (!data)) return;
 
@@ -266,11 +266,11 @@ function subscribe() {
 }
 
 function filterChanged() {
-    redrawAt = Date.now() + 4999;
+    redrawAt = Date.now() + 2999;
     setTimeout(function() {
         if (Date.now() > redrawAt)
             $("#form").submit();
-    }, 5000)
+    }, 3000)
 }
 
 function retrieveBlacklistedAds() {
