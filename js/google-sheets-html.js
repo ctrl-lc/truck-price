@@ -179,89 +179,17 @@ function drawData() {
                 dt.push(row);
         }
 
-        var t = $("#table")[0];
-        t.innerHTML = "";
-
-        dt.forEach(r => {
-            var d = document.createElement("div");
-            d.className = "col"
-            var s = `
-                <div class="card mx-2 my-2">
-                <div class="card-body"> 
-                
-                    <h3 class="card-title">
-                        <a href='${r.url}' 
-                        ${window.innerWidth > 480? "target=_blank": ""}
-                        onclick=" { 
-                            ym(61556533, 'reachGoal', 'table_click')
-                            ga('send', 'event', { 
-                                eventCategory: 'Outbound Link', 
-                                eventAction: 'click', 
-                                eventLabel: event.target.href 
-                            }); 
-                            firebase.analytics().logEvent('view_item', {item_location_id: '${r.url}'});
-                        }">
-                            ${r.make} ${r.model}
-                        </a>
-                    </h3>
-                    
-                    <div class="my-2">
-                        <small style="line-height: 1.7em; card-text">
-                            ${desc(r.year.replace(/\s/g, ""), "г.в.")}
-                            ${desc(r.mileage, "км")}
-                    `
-            if (selectedType == 0)
-                s = `${s}
-                            ${desc(r.gear, "")}
-                            ${desc(r.formula, "")}
-                            ${desc(r.hp.replace(/\s/g, ""), "л.с.")}
-                            ${desc(r.beds, "сп. м.")}
-                        `
-
-            s = `${s}
-                            ${desc(r.location, "")}
-                        </small>
-                    </div>
-                    <div class="my-2 px-1">
-                        <div class="card-text text-nowrap my-2">
-                            <b class="text-muted">Выгода: </b>
-                            <b><span class="p-1 text-white 
-                            ${Number(r.benefit.replace (/[\,\s]/g, ''))>0 ? "bg-warning" : "bg-danger"} 
-                            ">${r.benefit} р.</span></b>
-                        </div>
-                        <div class="card-text text-nowrap">
-                            <b class="text-muted">Цена: </b>${r.supplierPrice} р.
-                        </div>
-                `
-
-            if (r.leasePayment != "")
-                s = `${s}
-                        <div class="card-text text-nowrap">
-                            <b class="text-muted">Лизинг: </b>${r.leasePayment} р./мес.
-                        </div>
-                `
-
-            s = `${s}
-                    </div>
-
-                </div>
-                </div>
-                `
-            d.innerHTML = s
-            t.appendChild(d);
+        var app = new Vue({
+            el: "#results",
+            data: {
+                cards: dt,
+                cardsNo: dt.length,
+                width: window.innerWidth
+            }
         })
 
-        t.innerHTML = `
-                <div class="row">
-                    ${t.innerHTML}
-                </div>
-            
-            `
-
-
-        //поправляем в заголовке кол-во объявлений
-
         $("#rowNo")[0].innerHTML = String(dt.length)
+        $("#status")[0].innerHTML = ""
 
     } else {
         $("#status")[0].innerHTML =
@@ -312,11 +240,6 @@ function copyUrlToClipboard() {
     document.body.removeChild(dummy);
 
 
-}
-
-function desc(v, a) {
-    return !v ? "" :
-        `<span class="mx-1 px-1 bg-light text-nowrap">${a == "" ? v : v + " " + a}</span>`
 }
 
 function subscribe() {

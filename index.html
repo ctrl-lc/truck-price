@@ -68,6 +68,14 @@
         #status {
             font-style: italic;
         }
+        
+        [v-cloak] {
+            display: none
+        }
+        
+        a:visited {
+            color: #551A8B !important;
+        }
     </style>
 
     <!-- Yandex.Metrika counter -->
@@ -95,6 +103,9 @@
 
     <!-- jivosite code -->
     <script src="https://code-ya.jivosite.com/widget/eV5AoUco3H" async></script>
+
+    <!-- Vue - development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 </head>
 
@@ -244,7 +255,7 @@
             </div>
         </div>
 
-        <!-- Модельное окно подписки на обновления -->
+        <!-- Модальное окно подписки на обновления -->
         <div class="modal fade" id="subscribe" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -271,12 +282,61 @@
         </div>
     </form>
 
-    <div class="card mx-3 my-3">
+    <div id="results" class="card mx-3 my-3">
         <div class="card-body">
             <h2 class="mb-3 card-title"><span id="rowNo">20</span> самых выгодных объявлений</h2>
             <p><small id="listPrompt" class="text-muted"></small></p>
             <div id="table" class="table">
-                <p id="status">Подождите, ищем и загружаем объявления...</p>
+                <p id="status">
+                    Подождите, ищем и загружаем объявления...<br>
+                    <small class="text-muted">(Если вы видите это сообщение слишком долго, то, скорее всего, на вашем устройстве проблемы с интернет-соединением. Попробуйте перезагрузить сайт.)</small>
+                </p>
+                <div class="row" v-cloak>
+                    <div v-for="r in cards" class="col">
+                        <div class="card mx-2 my-2">
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                    <a :href="r.url" :target="width > 480? '_blank': ''" @click="ym(61556533, 'reachGoal', 'table_click')">
+                                        {{r.make}} {{r.model}}
+                                    </a>
+                                </h3>
+
+                                <div class="my-2 card-text">
+                                    <small style="line-height: 1.7em">
+                                        <span v-if="r.year" class="mx-1 px-1 bg-light text-nowrap">{{ r.year.replace(/\s/g, "") }} г.в.</span>
+                                        <span v-if="r.mileage" class="mx-1 px-1 bg-light text-nowrap">{{ r.mileage }} км</span>
+                                        <span v-if="r.gear" class="mx-1 px-1 bg-light text-nowrap">{{ r.gear }}</span>
+                                        <span v-if="r.formula" class="mx-1 px-1 bg-light text-nowrap">{{ r.formula }}</span>
+                                        <span v-if="r.hp" class="mx-1 px-1 bg-light text-nowrap">{{ r.hp }} л.с.</span>
+                                        <span v-if="r.beds" class="mx-1 px-1 bg-light text-nowrap">{{ r.beds }} сп.м.</span>
+                                        <span v-if="r.location" class="mx-1 px-1 bg-light text-nowrap">{{ r.location }}</span>
+                                    </small>
+                                </div>
+
+                                <div class="my-2 px-1 ">
+                                    <div class="card-text text-nowrap my-2">
+                                        <b class="text-muted">Выгода: </b>
+                                        <b><span class="p-1 text-white" v-bind:class="Number(r.benefit.replace(/[\,\s]/g, '')) > 0 ?
+                                            'p-1 text-white bg-warning': 'p-1 text-white bg-danger'">
+                                             {{ r.benefit }} р.
+                                        </span></b>
+                                    </div>
+                                    <div class="card-text text-nowrap">
+                                        <b class="text-muted">Цена: </b>{{ r.supplierPrice }} р.
+                                    </div>
+                                    <div class="card-text text-nowrap" v-if="r.leasePayment">
+                                        <b class="text-muted">Лизинг: </b>{{ r.leasePayment }} р./мес.
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
             </div>
         </div>
     </div>
