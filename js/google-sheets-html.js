@@ -190,7 +190,7 @@ function drawData() {
         })
 
         $("#rowNo")[0].innerHTML = String(dt.length)
-        $("#status")[0].innerHTML = ""
+        $("#status")[0].hidden = true
 
     } else {
         $("#status")[0].innerHTML =
