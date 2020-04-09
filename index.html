@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang=ru>
 
 <head>
     <meta charset="utf-8">
@@ -13,33 +13,6 @@
     <meta name="theme-color" content="#ffffff">
     <title>Поиск лучших цен на тягачи и полуприцепы</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
-
-    <script>
-        // Your web app's Firebase configuration
-        var firebaseConfig = {
-            apiKey: "AIzaSyCfCLScPkTjAUmRihLP-IDtOh0nksRlxVc",
-            authDomain: "best-trucks.firebaseapp.com",
-            databaseURL: "https://best-trucks.firebaseio.com",
-            projectId: "best-trucks",
-            storageBucket: "best-trucks.appspot.com",
-            messagingSenderId: "560287018063",
-            appId: "1:560287018063:web:b6fa09faa77488f8514e3a",
-            measurementId: "G-VNG1FYCBRJ"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-        var db = firebase.firestore();
-    </script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <style>
@@ -100,9 +73,6 @@
     <!-- /Yandex.Metrika counter -->
 
     <meta name="yandex-verification" content="13bcc2171074cd28" />
-
-    <!-- Vue - development version, includes helpful console warnings -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 </head>
 
@@ -425,6 +395,38 @@
         </div>
     </div>
 
+    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCfCLScPkTjAUmRihLP-IDtOh0nksRlxVc",
+            authDomain: "best-trucks.firebaseapp.com",
+            databaseURL: "https://best-trucks.firebaseio.com",
+            projectId: "best-trucks",
+            storageBucket: "best-trucks.appspot.com",
+            messagingSenderId: "560287018063",
+            appId: "1:560287018063:web:b6fa09faa77488f8514e3a",
+            measurementId: "G-VNG1FYCBRJ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        var db = firebase.firestore();
+    </script>
+
+    <!-- Vue - development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- main script -->
     <script src="js/google-sheets-html.js"></script>
 
 
