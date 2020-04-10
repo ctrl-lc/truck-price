@@ -227,24 +227,32 @@
     <div class="modal fade" id="subscribe" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Подписаться на новые объявления</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                       <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="name@example.com">
-                        <small id="emailHelp" class="form-text text-muted">Введите e-mail, на который каждое утро будут приходить новые объявления по выбранному вами фильтру.</small>
+                <form id="subcription_form">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Подписаться на новые объявления</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="subscribe()">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" required placeholder="name@example.com">
+                            <div class="invalid-feedback">
+                                E-mail для подписки не может быть пустым.
+                            </div>
+                            <small id="emailHelp" class="form-text text-muted">
+                                Введите e-mail, на который каждое утро будут приходить 
+                                новые объявления по выбранному вами фильтру.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                        <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="subscribe()">
                             Подписаться
                         </button>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

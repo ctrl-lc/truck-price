@@ -245,6 +245,15 @@ function copyUrlToClipboard() {
 
 function subscribe() {
 
+    form = $("#subcription_form")[0];
+    if (form.checkValidity() === false) {
+        event.preventDefault();
+        event.stopPropagation();
+        form.classList.add('was-validated');
+        return;
+    }
+
+
     var e = $('#email').get()[0].value
     var t = getUrlVars()
     var d = new Date()
