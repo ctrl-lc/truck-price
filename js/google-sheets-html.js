@@ -150,17 +150,7 @@ function handleQueryResponse(response) {
 function drawData() {
 
     if (data.getNumberOfRows() > 0) {
-        // Create a formatter.
-        // This example uses object literal notation to define the options.
-        const delims = new google.visualization.NumberFormat({ pattern: "#,###" });
-
-        // Форматируем данные
-
-        for (var i = 0; i < data.getNumberOfColumns(); i++)
-            if (data.getColumnType(i) == "number")
-                delims.format(data, i);
-
-            // загоняем в таблу
+        // загоняем в таблу
 
         var dt = [];
         for (var r = 0; r < data.getNumberOfRows(); r++) {
@@ -168,7 +158,10 @@ function drawData() {
             for (var c = 0; c < data.getNumberOfColumns(); c++) {
                 try {
                     key = schema.find(e => e.gsName == data.getColumnLabel(c)).name
-                    row[key] = data.getFormattedValue(r, c)
+                    let v = data.getValue(r, c)
+                    if (typeof v == "number")
+                        v = new Intl.NumberFormat("ru-ru").format(v)
+                    row[key] = v
                 } catch (err) {
                     console.log(`Не смогли найти ключ ${data.getColumnLabel(c)}`)
                 }
