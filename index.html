@@ -70,7 +70,6 @@
         });
     </script>
     <noscript><div><img src="https://mc.yandex.ru/watch/61556533" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
 
     <meta name="yandex-verification" content="13bcc2171074cd28" />
 
@@ -260,16 +259,20 @@
 
     <div id="results" class="card mx-3 my-3">
         <div class="card-body">
-            <h2 class="mb-3 card-title"><span id="rowNo">20</span> самых выгодных объявлений</h2>
+            <h2 class="mb-3 card-title">
+                <span v-once :hidden="true">20 самых выгодных объявлений</span>
+                <span v-cloak>{{title}}</span>
+            </h2>
+
             <p><small id="listPrompt" class="text-muted"></small></p>
             <div id="table" class="table">
-                <p id="status" class="p-md-5 m-md-5 m-3 p-3 bg-light">
+                <p id="status" class="p-md-5 m-md-5 m-3 p-3 bg-light" v-once :hidden="true">
                     Подождите, ищем и загружаем объявления...<br>
                     <small class="text-muted">(Если вы видите это сообщение слишком долго, то, скорее всего, на вашем устройстве проблемы с интернет-соединением. Попробуйте перезагрузить сайт.)</small>
                 </p>
                 <div class="row" v-cloak>
-                    <div v-for="r in cards" class="col">
-                        <div class="card mx-2 my-2">
+                    <div v-for="r in visibleCards" class="col" :key="r.url">
+                        <div class="card mx-2 my-2" v-if="r.visible">
                             <div class="card-body">
                                 <h3 class="card-title">
                                     <a :href="r.url" :target="width > 480? '_blank': ''" @click="ym(61556533, 'reachGoal', 'table_click')">
@@ -306,9 +309,10 @@
                                         </span></b></td>
                                     </tr>
                                 </table>
-                                <div class="card-footer">
-                                    <span class="badge badge-success" v-if="r.vat == 'ОК'">Цена с НДС</span>
-                                    <span class="badge badge-danger" v-if="r.vat != 'ОК'">НДС?</span>
+                                <div class="card-footer" v-if="(r.result == 'no_vat') || (r.result == 'no_vat_ever') || (r.result == 'ok') || (r.result == 'unclear') || r.leasePayment">
+                                    <span class="badge badge-success" v-if="r.result == 'ok'">Цена с НДС</span>
+                                    <span class="badge badge-danger" v-if="(r.result == 'no_vat') || (r.result == 'no_vat_ever')">Без НДС</span>
+                                    <span class="badge badge-secondary" v-if="r.result == 'unclear'">НДС?</span>
                                     <a class="badge badge-info" v-if="r.leasePayment" href="https://lp.ctrl.lc/usedtrucks">Лизинг: {{ r.leasePayment }} р./мес.</a>
                                 </div>
                             </div>
@@ -403,7 +407,7 @@
         </div>
     </div>
 
-    <script src="https://www.google.com/jsapi" type="text/javascript"></script>
+    <script src="https://www.google.com/jsapi"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
@@ -437,14 +441,14 @@
     <!-- main script -->
     <script src="js/google-sheets-html.js"></script>
 
-
+    <!-- bootstrap code -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js " integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n " crossorigin="anonymous "></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js " integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js " integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6 " crossorigin="anonymous "></script>
 
     <!-- jivosite code -->
     <script src="https://code-ya.jivosite.com/widget/eV5AoUco3H" async></script>
-
+    -->
 
 
 </body>

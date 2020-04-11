@@ -55,7 +55,8 @@ const schema = [{
     { name: "minDownpayment", gsName: "Мин. аванс" },
     { name: "leasePayment", gsName: "Лизинговый платеж 0% / 48 мес." },
     { name: "gear", gsName: "Тип КПП" },
-    { name: "vat", gsName: "Прогноз по НДС" }
+    { name: "confidence", gsName: "Качество верификации" },
+    { name: "result", gsName: "Верификация" }
 
 
 ]
@@ -64,12 +65,12 @@ var visualization;
 var selectedType;
 var data;
 var blacklistedAds;
+var app;
 
 google.load('visualization', '1', {
     packages: ['table']
 });
 google.setOnLoadCallback(requestData);
-retrieveBlacklistedAds();
 
 function requestData() {
 
@@ -148,8 +149,6 @@ function handleQueryResponse(response) {
 
 function drawData() {
 
-    if ((!blacklistedAds) || (!data)) return;
-
     if (data.getNumberOfRows() > 0) {
         // Create a formatter.
         // This example uses object literal notation to define the options.
@@ -164,8 +163,7 @@ function drawData() {
             // загоняем в таблу
 
         var dt = [];
-        for (var r = 0;
-            (r < data.getNumberOfRows()) && (dt.length < 20); r++) {
+        for (var r = 0; r < data.getNumberOfRows(); r++) {
             var row = new Object;
             for (var c = 0; c < data.getNumberOfColumns(); c++) {
                 try {
@@ -176,27 +174,84 @@ function drawData() {
                 }
 
             }
-            if (!blacklistedAds.find(e => row.url == e))
-                dt.push(row);
+            row['visible'] = true
+            dt.push(row);
         }
 
-        var app = new Vue({
+        app = new Vue({
             el: "#results",
             data: {
                 cards: dt,
-                cardsNo: dt.length,
+                title: "",
                 width: window.innerWidth
+            },
+            computed: {
+                visibleCards: function() {
+                    vc = []
+                    for (let i = 0;
+                        (vc.length < 20) && (i < this.cards.length); i++)
+                        if (this.cards[i].visible)
+                            vc.push(this.cards[i])
+
+                    const titleEndings = [
+                        ' самое выгодное объявление',
+                        ' самых выгодных объявления',
+                        ' самых выгодных объявлений'
+                    ]
+
+                    let l = vc.length
+
+                    if (l == 1)
+                        this.title = l.toString() + titleEndings[0]
+                    else if ((l > 1) && (l < 5))
+                        this.title = l.toString() + titleEndings[1]
+                    else
+                        this.title = l.toString() + titleEndings[2]
+
+                    return vc
+                }
             }
         })
-
-        $("#rowNo")[0].innerHTML = String(dt.length)
-        $("#status")[0].hidden = true
 
     } else {
         $("#status")[0].innerHTML =
             "К сожалению, заданным условиям не удовлетворяет ни одно объявление. Проверьте правильность настроек фильтра.";
         $("#status")[0].className = "text-danger"
     }
+
+    loadVerificationResults(dt);
+}
+
+function loadVerificationResults(dt) {
+    dt.forEach(el => {
+        var docName = encodeURIComponent(el.url)
+        db.collection(`ads/${docName}/verifications`)
+            .get() // возможно, в будущем использовать локальный кэш - https://firebase.google.com/docs/reference/js/firebase.firestore.GetOptions
+            .then(function(docs) {
+
+                // находим результат верификации с лучшим confidence
+
+                let bestVerificationResult = null
+                let bestVerificationConfidence = 0
+                docs.forEach((doc) => {
+                    let d = doc.data()
+                    if (d['confidence'] > bestVerificationConfidence) {
+                        bestVerificationConfidence = d['confidence']
+                        bestVerificationResult = d['result']
+                    }
+                })
+
+                // записывваем результат в dt
+
+                el.result = bestVerificationResult
+                if (!['ok', 'unclear', 'no_vat', 'no_vat_ever'].find(e => e == bestVerificationResult))
+                    el.visible = false
+
+            })
+            .catch(function(error) {
+                console.log("Error getting the document: ", error);
+            });
+    })
 }
 
 function getUrlVars() {
@@ -281,18 +336,4 @@ function filterChanged() {
         if (Date.now() > redrawAt)
             $("#form").submit();
     }, 3000)
-}
-
-function retrieveBlacklistedAds() {
-    db.collection("blacklisted_ads")
-        .get()
-        .then(function(querySnapshot) {
-            blacklistedAds = [];
-            querySnapshot.forEach((doc) =>
-                blacklistedAds.push(doc.data().url))
-            drawData();
-        })
-        .catch(function(error) {
-            console.log("Error getting documents: ", error);
-        });
 }
