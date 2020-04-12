@@ -75,12 +75,16 @@ function loadNextAd() {
     docs.forEach((d) => {
         if (
             (d.data().benefit > maxBenefit) &&
-            (ad.alreadyChecked.indexOf(d.id) == -1)
+            (ad.alreadyChecked.indexOf(d.id) == -1) &&
+            (d.id.match(/auto\.ru/))
         ) {
             doc = d
             maxBenefit = d.data().benefit
         }
     })
+
+    if (!doc)
+        alert('Верификация не требуется - приходите позже!')
 
     // копируем все данные в ad
     Object.assign(ad, doc.data())
@@ -121,7 +125,7 @@ function draw() {
                         confidence: 1,
                         date: new Date()
                     }
-                    collection(`ads/${ad.docID}/verifications`).add(r)
+                    db.collection(`ads/${ad.docID}/verifications`).add(r)
                     db.collection('ads').doc(ad.docID).set({ checked: true }, { merge: true })
                         .catch(function(error) {
                             console.log("Ошибка при записи свойства checked: ", error);
