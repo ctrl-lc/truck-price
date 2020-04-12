@@ -9,16 +9,22 @@
             "name": "Launch localhost",
             "type": "chrome",
             "request": "launch",
-            "url": "http://localhost/",
+            "url": "http://localhost/index.html",
             "port": 9222,
             "webRoot": "${workspaceFolder}"
 
         },
         {
-            "name": "Launch index.html",
+            "name": "index.html",
             "type": "chrome",
             "request": "launch",
             "file": "${workspaceFolder}/index.html"
+        },
+        {
+            "name": "service.html",
+            "type": "chrome",
+            "request": "launch",
+            "file": "${workspaceFolder}/service.html"
         },
 
     ]
