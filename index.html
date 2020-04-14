@@ -304,7 +304,7 @@
                                     <tr>
                                         <th scope="row" class="align-middle">Выгода</th>
                                         <td class="num py-2"><b><span v-bind:class="Number(r.benefit.replace(/[\,\s]/g, '')) > 0 ?
-                                            'p-1 text-white bg-warning': 'p-1 text-white bg-danger'">
+                                            'p-1 text-white bg-warning': 'p-1 text-white bg-light'">
                                              {{ r.benefit }} р.
                                         </span></b></td>
                                     </tr>
@@ -313,7 +313,9 @@
                                     <span class="badge badge-success" v-if="r.result == 'ok'">Цена с НДС</span>
                                     <span class="badge badge-danger" v-if="(r.result == 'no_vat') || (r.result == 'no_vat_ever')">Без НДС</span>
                                     <span class="badge badge-secondary" v-if="r.result == 'unclear'">НДС?</span>
-                                    <a class="badge badge-info" v-if="r.leasePayment" href="https://lp.ctrl.lc/usedtrucks">Лизинг: {{ r.leasePayment }} р./мес.</a>
+                                    <a class="badge badge-info" v-if="(r.leasePayment) && (r.result != 'no_vat') && (r.result != 'no_vat_ever')" v-bind:href="'https://lp.ctrl.lc/usedtrucks?price=' + r.supplierPrice.replace(/[\s\,\.]/g, '') + '&utm_term=' + (r.vehicleType == 'Тягач' ? 'truck' : 'trailer')">
+                                        Лизинг: {{ r.leasePayment }} р./мес.
+                                    </a>
                                 </div>
                             </div>
                         </div>
