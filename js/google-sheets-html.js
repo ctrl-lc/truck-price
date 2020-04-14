@@ -48,12 +48,17 @@ const schema = [{
         filterQuotes: false
     },
 
+    {
+        name: "leasePayment",
+        gsName: "Лизинговый платеж 0% / 48 мес.",
+        filterColumn: "S"
+    },
+
     { name: "supplier", gsName: "Поставщик" },
     { name: "valuation", gsName: "Наша расчетная цена" },
     { name: "benefit", gsName: "Выгода" },
     { name: "recommendation", gsName: "Рекомендация" },
     { name: "minDownpayment", gsName: "Мин. аванс" },
-    { name: "leasePayment", gsName: "Лизинговый платеж 0% / 48 мес." },
     { name: "gear", gsName: "Тип КПП" },
     { name: "confidence", gsName: "Качество верификации" },
     { name: "result", gsName: "Верификация" }
@@ -96,13 +101,6 @@ function requestData() {
 
     filter = `WHERE (A="${types[selectedType]}")`;
 
-    var checkboxFilter = [
-        { name: "year", column: "`Год выпуска`", quotes: false },
-        { name: "brand", column: "`Марка`", quotes: true },
-        { name: "formula", column: "`Колесная формула`", quotes: true },
-        { name: "beds", column: "`Спальных мест`", quotes: false }
-    ]
-
     var brandTranslation = {
         "MAZ": "МАЗ",
         "KAMAZ": "КамАЗ",
@@ -131,7 +129,10 @@ function requestData() {
         }
     });
 
-    queryString = `SELECT * ${filter} LIMIT 40`
+    if ($('[name = "leasingOnly"]')[0].checked)
+        filter = `${filter} AND (${schema.find(el => el.name == "leasePayment").filterColumn} > 0)`
+
+    queryString = `SELECT * ${filter} LIMIT 100`
     console.log(queryString);
     firebase.analytics().logEvent('search', { search_term: queryString });
     query.setQuery(queryString);
@@ -149,10 +150,9 @@ function handleQueryResponse(response) {
 
 function drawData() {
 
+    // загоняем в таблу
+    var dt = [];
     if (data.getNumberOfRows() > 0) {
-        // загоняем в таблу
-
-        var dt = [];
         for (var r = 0; r < data.getNumberOfRows(); r++) {
             var row = new Object;
             for (var c = 0; c < data.getNumberOfColumns(); c++) {
@@ -170,47 +170,42 @@ function drawData() {
             row['visible'] = true
             dt.push(row);
         }
-
-        app = new Vue({
-            el: "#results",
-            data: {
-                cards: dt,
-                title: "",
-                width: window.innerWidth
-            },
-            computed: {
-                visibleCards: function() {
-                    vc = []
-                    for (let i = 0;
-                        (vc.length < 20) && (i < this.cards.length); i++)
-                        if (this.cards[i].visible)
-                            vc.push(this.cards[i])
-
-                    const titleEndings = [
-                        ' самое выгодное объявление',
-                        ' самых выгодных объявления',
-                        ' самых выгодных объявлений'
-                    ]
-
-                    let l = vc.length
-
-                    if (l == 1)
-                        this.title = l.toString() + titleEndings[0]
-                    else if ((l > 1) && (l < 5))
-                        this.title = l.toString() + titleEndings[1]
-                    else
-                        this.title = l.toString() + titleEndings[2]
-
-                    return vc
-                }
-            }
-        })
-
-    } else {
-        $("#status")[0].innerHTML =
-            "К сожалению, заданным условиям не удовлетворяет ни одно объявление. Проверьте правильность настроек фильтра.";
-        $("#status")[0].className = "text-danger"
     }
+
+    app = new Vue({
+        el: "#results",
+        data: {
+            cards: dt,
+            title: "",
+            width: window.innerWidth
+        },
+        computed: {
+            visibleCards: function() {
+                vc = []
+                for (let i = 0;
+                    (vc.length < 20) && (i < this.cards.length); i++)
+                    if (this.cards[i].visible)
+                        vc.push(this.cards[i])
+
+                const titleEndings = [
+                    ' самое выгодное объявление',
+                    ' самых выгодных объявления',
+                    ' самых выгодных объявлений'
+                ]
+
+                let l = vc.length
+
+                if (l == 1)
+                    this.title = l.toString() + titleEndings[0]
+                else if ((l > 1) && (l < 5))
+                    this.title = l.toString() + titleEndings[1]
+                else
+                    this.title = l.toString() + titleEndings[2]
+
+                return vc
+            }
+        }
+    })
 
     loadVerificationResults(dt);
 }
@@ -238,6 +233,9 @@ function loadVerificationResults(dt) {
 
                 el.result = bestVerificationResult
                 if (!['ok', 'unclear', 'no_vat', 'no_vat_ever'].find(e => e == bestVerificationResult))
+                    el.visible = false
+
+                if (($('[name = "leasingOnly"]')[0].checked) && (['no_vat', 'no_vat_ever'].find(e => e == bestVerificationResult)))
                     el.visible = false
 
             })

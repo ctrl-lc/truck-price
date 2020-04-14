@@ -224,6 +224,14 @@
                                 <label class="form-check-label">2 спальных места</label>
                             </div>
                         </div>
+
+                        <div class="col mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="leasingOnly">
+                                <label class="form-check-label">Только с возможностью лизинга</label>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
@@ -282,10 +290,15 @@
 
             <p><small id="listPrompt" class="text-muted"></small></p>
             <div id="table" class="table">
-                <p id="status" class="p-md-5 m-md-5 m-3 p-3 bg-light" v-once :hidden="true">
+                <p class="p-md-5 m-md-5 m-3 p-3 bg-light" v-once :hidden="true">
                     Подождите, ищем и загружаем объявления...<br>
                     <small class="text-muted">(Если вы видите это сообщение слишком долго, то, скорее всего, на вашем устройстве проблемы с интернет-соединением. Попробуйте перезагрузить сайт.)</small>
                 </p>
+                <p class="p-md-5 m-md-5 m-3 p-3 bg-light text-danger" v-cloak v-if="visibleCards.length == 0">
+                    К сожалению, заданным условиям не удовлетворяет ни одно объявление.<br>
+                    <small class="text-muted">(Возможно, вы слишком сильно ограничили отбор. Попробуйте расширить параметры фильтрации.)</small>
+                </p>
+                <p v-if="visibleCards.length == 0"></p>
                 <div class="row" v-cloak>
                     <div v-for="r in visibleCards" class="col" :key="r.url">
                         <div class="card mx-2 my-2" v-if="r.visible">
@@ -320,7 +333,7 @@
                                     <tr>
                                         <th scope="row" class="align-middle">Выгода</th>
                                         <td class="num py-2"><b><span v-bind:class="Number(r.benefit.replace(/[\,\s]/g, '')) > 0 ?
-                                            'p-1 text-white bg-warning': 'p-1 text-white bg-light'">
+                                            'p-1 text-white bg-warning': 'p-1 bg-light'">
                                              {{ r.benefit }} р.
                                         </span></b></td>
                                     </tr>
