@@ -44,6 +44,13 @@
                         <div class="row my-3">
                             <table id="data" class="table col table-sm table-hover">
                                 <tr>
+                                    <th>Ссылка</th>
+                                    <td class="text-right">
+                                        <a v-bind:href="url" target=_blank class="btn btn-outline-primary">Открыть в новом окне</a>
+                                        <a v-bind:href="url" class="btn btn-outline-secondary">Найти по ссылке</a>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <th>Тип ТС</th>
                                     <td>{{vehicleType}}</td>
                                 </tr>
@@ -109,9 +116,11 @@
                     </div>
 
                 </td>
+                <!--
                 <td>
                     <div id="original"><iframe :src="url"></iframe></div>
                 </td>
+                -->
             </tr>
         </table>
     </div>
