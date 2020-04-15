@@ -73,7 +73,7 @@ var blacklistedAds;
 var app;
 var dt = [];
 
-
+initFilters;
 google.load('visualization', '1', {
     packages: ['table']
 });
@@ -81,23 +81,11 @@ google.setOnLoadCallback(requestData);
 
 function requestData() {
 
-    redrawAt = Date() + 5000; // запретить перерисовку из filterChanged на 5 секундн
+    redrawAt = Date() + 5000; // запретить перерисовку из filterChanged на 5 секунд
 
     //init filters from URL
 
-    var s = location.search.match(/VehicleType=(\d*)/) // ищем параметр VehicleType
-    selectedType = s && s.length > 0 ? Number(s[1] - 1) : 0
-    selectedType = (selectedType < 0) || (selectedType > 3) ? 0 : selectedType
-
-    $('[name=VehicleType]').get()[selectedType].checked = true;
-
-    var checkboxes = Object.entries(getUrlVars()).filter(e => e[1] == "on");
-    checkboxes.forEach(e => { $(`[name=${e[0]}]`).get()[0].checked = true });
-
-    // обнулять и дизейблить остальные фильтры, если выбраны полуприцепы
-
-    if (selectedType > 0)
-        trailersClicked();
+    initFilters();
 
     var query = new google.visualization.Query('https://spreadsheets.google.com/tq?key=1Hcc4ay2SZu1gImUljdbTVgw3GEaJrz-7IerNWcZDRzU&output=html&usp=sharing');
 
@@ -139,6 +127,23 @@ function requestData() {
     firebase.analytics().logEvent('search', { search_term: queryString });
     query.setQuery(queryString);
     query.send(handleQueryResponse);
+}
+
+function initFilters() {
+
+    // VehicleType
+    var s = location.search.match(/VehicleType=(\d*)/);
+    selectedType = s && s.length > 0 ? Number(s[1] - 1) : 0;
+    selectedType = (selectedType < 0) || (selectedType > 3) ? 0 : selectedType;
+    $('[name=VehicleType]').get()[selectedType].checked = true;
+
+    // чекбоксы
+    var checkboxes = Object.entries(getUrlVars()).filter(e => e[1] == "on");
+    checkboxes.forEach(e => { $(`[name=${e[0]}]`).get()[0].checked = true; });
+
+    // обнулять и дизейблить фильтры, если выбраны полуприцепы
+    if (selectedType > 0)
+        trailersClicked();
 }
 
 function handleQueryResponse(response) {
