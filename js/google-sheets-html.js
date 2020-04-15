@@ -219,7 +219,7 @@ function loadNextVerificationResult() {
     // для экономии квоты по запросам к firestore вываливаемся, когда все видимые карточки проверены
 
     if (dt.filter(dt_el => dt_el.checked && dt_el.visible).length >= 20) {
-        console.log(`20 elements provided, ${dt.filter(e => e.checked).length} checked`)
+        console.log(`${dt.filter(e => e.checked).length} checked to provide ${Math.min (20, dt.filter(e => e.visible).length)} visible cards`)
         return;
     }
 
@@ -227,27 +227,21 @@ function loadNextVerificationResult() {
 
     if (el) {
         var docName = encodeURIComponent(el.url)
-        db.collection(`ads/${docName}/verifications`)
+        db.collection(`ads/${docName}/verifications`) // берем одну последнюю по дате человеческую проверку
+            .where('confidence', '==', '1')
+            .orderBy('date', 'desc')
+            .limit(1)
             .get() // возможно, в будущем использовать локальный кэш - https://firebase.google.com/docs/reference/js/firebase.firestore.GetOptions
-            .then(function(docs) {
+            .then(function(QuerySnapshot) {
 
-                // находим результат верификации с лучшим confidence
+                if (!QuerySnapshot.empty) {
 
-                let bestVerificationResult = null
-                let bestVerificationConfidence = 0
-                docs.forEach((doc) => {
-                    let d = doc.data()
-                    if (d['confidence'] > bestVerificationConfidence) {
-                        bestVerificationConfidence = d['confidence']
-                        bestVerificationResult = d['result']
-                    }
-                })
+                    // записываем результат в dt
 
-                // записываем результат в dt
+                    el.result = Query.Snapshot.docs[0].data().result;
 
-                el.result = bestVerificationResult;
-
-                checkVisibility(el);
+                    checkVisibility(el);
+                }
 
                 el.checked = true;
 
@@ -256,6 +250,8 @@ function loadNextVerificationResult() {
             .catch(function(error) {
                 console.log("Error getting the document: ", error);
             });
+    } else {
+        console.log(`${dt.filter(e => e.checked).length} checked to provide ${Math.min (20, dt.filter(e => e.visible).length)} visible cards`)
     }
 }
 
