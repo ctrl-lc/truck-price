@@ -71,6 +71,8 @@ var selectedType;
 var data;
 var blacklistedAds;
 var app;
+var dt = [];
+
 
 google.load('visualization', '1', {
     packages: ['table']
@@ -132,7 +134,7 @@ function requestData() {
     if ($('[name = "leasingOnly"]')[0].checked)
         filter = `${filter} AND (${schema.find(el => el.name == "leasePayment").filterColumn} > 0)`
 
-    queryString = `SELECT * ${filter} LIMIT 100`
+    queryString = `SELECT * ${filter} LIMIT 40`
     console.log(queryString);
     firebase.analytics().logEvent('search', { search_term: queryString });
     query.setQuery(queryString);
@@ -151,7 +153,6 @@ function handleQueryResponse(response) {
 function drawData() {
 
     // загоняем в таблу
-    var dt = [];
     if (data.getNumberOfRows() > 0) {
         for (var r = 0; r < data.getNumberOfRows(); r++) {
             var row = new Object;
@@ -167,10 +168,13 @@ function drawData() {
                 }
 
             }
-            row['visible'] = true
+            row.visible = true
+            row.checked = false
             dt.push(row);
         }
     }
+
+    dt.forEach(el => checkVisibility(el))
 
     app = new Vue({
         el: "#results",
@@ -207,11 +211,21 @@ function drawData() {
         }
     })
 
-    loadVerificationResults(dt);
+    loadNextVerificationResult();
 }
 
-function loadVerificationResults(dt) {
-    dt.forEach(el => {
+function loadNextVerificationResult() {
+
+    // для экономии квоты по запросам к firestore вываливаемся, когда все видимые карточки проверены
+
+    if (dt.filter(dt_el => dt_el.checked && dt_el.visible).length >= 20) {
+        console.log(`20 elements provided, ${dt.filter(e => e.checked).length} checked`)
+        return;
+    }
+
+    el = dt.find(el => !el.checked)
+
+    if (el) {
         var docName = encodeURIComponent(el.url)
         db.collection(`ads/${docName}/verifications`)
             .get() // возможно, в будущем использовать локальный кэш - https://firebase.google.com/docs/reference/js/firebase.firestore.GetOptions
@@ -229,20 +243,27 @@ function loadVerificationResults(dt) {
                     }
                 })
 
-                // записывваем результат в dt
+                // записываем результат в dt
 
-                el.result = bestVerificationResult
-                if (!['ok', 'unclear', 'no_vat', 'no_vat_ever'].find(e => e == bestVerificationResult))
-                    el.visible = false
+                el.result = bestVerificationResult;
 
-                if (($('[name = "leasingOnly"]')[0].checked) && (['no_vat', 'no_vat_ever'].find(e => e == bestVerificationResult)))
-                    el.visible = false
+                checkVisibility(el);
 
+                el.checked = true;
+
+                loadNextVerificationResult(); // этого проверили, берем следующего
             })
             .catch(function(error) {
                 console.log("Error getting the document: ", error);
             });
-    })
+    }
+}
+
+function checkVisibility(el) {
+    if (el.result && !['ok', 'unclear', 'no_vat', 'no_vat_ever'].find(e => e == el.result))
+        el.visible = false;
+    if (($('[name = "leasingOnly"]')[0].checked) && el.result && (['no_vat', 'no_vat_ever'].find(e => e == el.result)))
+        el.visible = false;
 }
 
 function getUrlVars() {
