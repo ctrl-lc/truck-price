@@ -17,9 +17,9 @@ ad.decisions = [{
     },
     {
         decision: 'mix_other',
-        button: 'Другие причины / Несколько',
+        button: 'Прочее',
         color: 'btn-dark',
-        desc: 'Неправильно указана марка / модель'
+        desc: 'Например, неправильно указана марка / модель, или несколько причин'
     },
     {
         decision: 'leasing',
@@ -29,7 +29,7 @@ ad.decisions = [{
     },
     {
         decision: 'no_vat_ever',
-        button: 'Продажа только без НДС',
+        button: 'Только без НДС',
         color: 'btn-danger',
         desc: 'Продажа с НДС невозможна - продает физлицо'
     },
