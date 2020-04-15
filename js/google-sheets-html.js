@@ -223,12 +223,12 @@ function loadNextVerificationResult() {
         return;
     }
 
-    el = dt.find(el => !el.checked)
+    var el = dt.find(el => !el.checked)
 
     if (el) {
         var docName = encodeURIComponent(el.url)
         db.collection(`ads/${docName}/verifications`) // берем одну последнюю по дате человеческую проверку
-            .where('confidence', '==', '1')
+            .where('confidence', '==', 1)
             .orderBy('date', 'desc')
             .limit(1)
             .get() // возможно, в будущем использовать локальный кэш - https://firebase.google.com/docs/reference/js/firebase.firestore.GetOptions
@@ -238,7 +238,7 @@ function loadNextVerificationResult() {
 
                     // записываем результат в dt
 
-                    el.result = Query.Snapshot.docs[0].data().result;
+                    el.result = QuerySnapshot.docs[0].data().result;
 
                     checkVisibility(el);
                 }
