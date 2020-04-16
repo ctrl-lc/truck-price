@@ -451,48 +451,33 @@
         </div>
     </div>
 
-    <script src="https://www.google.com/jsapi"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js " integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n " crossorigin="anonymous "></script>
+    <script src="js/filters.js"></script>
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/7.13.2/firebase-app.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/7.13.2/firebase-firestore.js"></script>
 
-    <script>
-        // Your web app's Firebase configuration
-        var firebaseConfig = {
-            apiKey: "AIzaSyCfCLScPkTjAUmRihLP-IDtOh0nksRlxVc",
-            authDomain: "best-trucks.firebaseapp.com",
-            databaseURL: "https://best-trucks.firebaseio.com",
-            projectId: "best-trucks",
-            storageBucket: "best-trucks.appspot.com",
-            messagingSenderId: "560287018063",
-            appId: "1:560287018063:web:b6fa09faa77488f8514e3a",
-            measurementId: "G-VNG1FYCBRJ"
-        };
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-        var db = firebase.firestore();
-    </script>
+    <script defer src="js/init-firestore.js"></script>
 
     <!-- Vue - development version, includes helpful console warnings -->
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script src="https://www.google.com/jsapi"></script>
 
     <!-- main script -->
-    <script src="js/google-sheets-html.js"></script>
+    <script src="js/main.js"></script>
 
     <!-- bootstrap code -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js " integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n " crossorigin="anonymous "></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js " integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo " crossorigin="anonymous "></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js " integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6 " crossorigin="anonymous "></script>
 
     <!-- jivosite code -->
-    <script src="https://code-ya.jivosite.com/widget/eV5AoUco3H" async></script>
-    -->
+    <script async src="https://code-ya.jivosite.com/widget/eV5AoUco3H"></script>
 
 
 </body>
