@@ -1,19 +1,21 @@
 var selectedType;
 var redrawAt = -1;
 
-// VehicleType
+// анализируем VehicleType и устанавливаем переменную selected Type
 var s = location.search.match(/VehicleType=(\d*)/);
 selectedType = s && s.length > 0 ? Number(s[1] - 1) : 0;
 selectedType = (selectedType < 0) || (selectedType > 3) ? 0 : selectedType;
 $('[name=VehicleType]').get()[selectedType].checked = true;
 
-// чекбоксы
+// устанавливаем чекбоксы на форме
 var checkboxes = Object.entries(getUrlVars()).filter(e => e[1] == "on");
 checkboxes.forEach(e => { $(`[name=${e[0]}]`).get()[0].checked = true; });
 
 // обнулять и дизейблить фильтры, если выбраны полуприцепы
 if (selectedType > 0)
     trailersClicked();
+
+updateTitle();
 
 function getUrlVars() {
     var vars = {};
@@ -52,4 +54,28 @@ function filterChanged() {
         if (Date.now() > redrawAt)
             $("#form").submit();
     }, 3000)
+}
+
+function updateTitle() {
+    let t = ''; // заготовка для title
+
+    if (selectedType == 0)
+        t = 'Тягачи'
+    else
+        t = 'Полуприцепы'
+
+    //добавляем бренд
+    window.location.href.match(/brand(\w*)/g).forEach((e, i) => {
+        if (i == 0)
+            t += ' ' + e.match(/brand(\w*)/)[1]
+        else
+            t += ', ' + e.match(/brand(\w*)/)[1]
+    })
+
+    if (window.location.href.match(/leasing/))
+        t += ' в лизинг'
+
+    t += ' по заниженным ценам'
+
+    document.title = t;
 }
