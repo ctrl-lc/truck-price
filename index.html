@@ -292,8 +292,14 @@
             <p><small id="listPrompt" class="text-muted"></small></p>
             <div id="table" class="table">
                 <div class="p-md-5 m-md-5 m-3 p-3 bg-light" v-once :hidden="true">
-                    Подождите, ищем и загружаем объявления...<br>
-                    <small class="text-muted">(Если вы видите это сообщение слишком долго, то, скорее всего, на вашем устройстве проблемы с интернет-соединением. Попробуйте перезагрузить сайт.)</small>
+                    <div class="row">
+                        <div class="spinner-grow" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="col"> Подождите, ищем и загружаем объявления...<br>
+                            <small class="text-muted">(Если вы видите это сообщение слишком долго, то, скорее всего, на вашем устройстве проблемы с интернет-соединением. Попробуйте перезагрузить сайт.)</small>
+                        </div>
+                    </div>
                 </div>
                 <div class="m-2 p-4 bg-light text-danger" v-cloak v-if="visibleCards.length <= 5">
                     <div>
