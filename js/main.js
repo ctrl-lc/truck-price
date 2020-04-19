@@ -24,7 +24,12 @@ const schema = [{
         filterQuotes: false
     },
 
-    { name: "supplierPrice", gsName: "Цена поставщика" },
+    {
+        name: "supplierPrice",
+        gsName: "Цена поставщика",
+        filterColumn: "E"
+    },
+
     { name: "location", gsName: "Регион склада" },
     { name: "url", gsName: "URL авто" },
     { name: "mileage", gsName: "Пробег" },
@@ -117,6 +122,8 @@ function requestData() {
 
     if ($('[name = "leasingOnly"]')[0].checked)
         filter = `${filter} AND (${schema.find(el => el.name == "leasePayment").filterColumn} > 0)`
+
+    filter += ` AND (${schema.find(el => el.name == "supplierPrice").filterColumn} <= ${$("#maxprice")[0].value})`
 
     queryString = `SELECT * ${filter} LIMIT 40`
     console.log(queryString);

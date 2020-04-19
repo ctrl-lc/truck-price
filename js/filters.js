@@ -11,6 +11,13 @@ $('[name=VehicleType]').get()[selectedType].checked = true;
 var checkboxes = Object.entries(getUrlVars()).filter(e => e[1] == "on");
 checkboxes.forEach(e => { $(`[name=${e[0]}]`).get()[0].checked = true; });
 
+//устанавливаем maxprice
+let mp = getUrlVars()["maxprice"]
+if (mp) {
+    $("#maxprice")[0].value = mp
+    adjustPriceLabel()
+}
+
 // обнулять и дизейблить фильтры, если выбраны полуприцепы
 if (selectedType > 0)
     trailersClicked();
@@ -78,4 +85,14 @@ function updateTitle() {
     t += ' по заниженным ценам'
 
     document.title = t;
+}
+
+function adjustPriceLabel() {
+    $("#priceLabel")[0].innerText = Intl.NumberFormat("ru-ru").format(Number($("#maxprice")[0].value))
+}
+
+function clearFilters() {
+    $('#form input:checkbox').prop('checked', false)
+    $('#maxprice')[0].value = '10000000'
+    $('#form').submit()
 }
