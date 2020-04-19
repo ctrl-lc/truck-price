@@ -108,7 +108,7 @@
                 <p><small class="text-muted">Уберите все галочки в группе, чтобы снять фильтрацию по этому признаку</small></p>
                 <div class="container" onchange="filterChanged()">
                     <div class="row mb-4">
-                        <div class="col mb-4">
+                        <div class="col mb-4" title="Тип транспортного средства">
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="VehicleType" onclick="trucksClicked()" value=1>
                                 <label class="form-check-label">Тягачи</label>
@@ -127,7 +127,7 @@
                             </div>
                         </div>
 
-                        <div class="col mb-4">
+                        <div class="col mb-4" title="Год выпуска">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="year2019">
                                 <label class="form-check-label">2019 г.в.</label>
@@ -150,7 +150,7 @@
                             </div>
                         </div>
 
-                        <div class="col mb-4 disableForTrailers">
+                        <div class="col mb-4 disableForTrailers" title="Марка тягача">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="brandVOLVO">
                                 <label class="form-check-label">Volvo</label>
@@ -173,7 +173,7 @@
                             </div>
                         </div>
 
-                        <div class="col mb-4 disableForTrailers">
+                        <div class="col mb-4 disableForTrailers" title="Марка тягача">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="brandIVECO">
                                 <label class="form-check-label">Iveco</label>
@@ -192,7 +192,7 @@
                             </div>
                         </div>
 
-                        <div class="col mb-4 disableForTrailers">
+                        <div class="col mb-4 disableForTrailers" title="Колесная формула тягача">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="formula4x2">
                                 <label class="form-check-label">4x2</label>
@@ -215,7 +215,7 @@
                             </div>
                         </div>
 
-                        <div class="col mb-4 disableForTrailers">
+                        <div class="col mb-4 disableForTrailers" title="Количество спальных мест в кабине тягача">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="beds1">
                                 <label class="form-check-label">1 спальное место</label>
@@ -227,7 +227,7 @@
                         </div>
 
                         <div class="col mb-4">
-                            <div class="form-check">
+                            <div class="form-check" title="Показывать только те ТС, которые можно приобрести в лизинг">
                                 <input class="form-check-input" type="checkbox" name="leasingOnly">
                                 <label class="form-check-label">Только с возможностью лизинга</label>
                             </div>
@@ -235,7 +235,7 @@
 
                     </div>
 
-                    <div class="row mb-5 bg-light p-3">
+                    <div class="row mb-5 bg-light p-3" title="Из списка отбираемых объявлений исключаются те, чья цена превышает указанную">
                         <label for="maxprice">Максимальная цена в объявлении: <span id="priceLabel">10 000 000</span> руб.</label>
                         <input type="range" class="custom-range" min="0" max="10000000" step="250000" id="maxprice" name="maxprice" value="10000000" oninput="adjustPriceLabel()">
                         <div class="w-100">
@@ -325,7 +325,7 @@
                 <div v-for="r in visibleCards" class="col" :key="r.url">
                     <div class="card mx-2 my-2" v-if="r.visible">
                         <div class="card-body">
-                            <h3 class="card-title">
+                            <h3 class="card-title" title="Кликните, чтобы посмотреть объявление">
                                 <a :href="r.url" :target="width > 480? '_blank': ''" @click="ym(61556533, 'reachGoal', 'table_click')">
                                         {{r.make}} {{r.model}}
                                     </a>
@@ -333,26 +333,26 @@
 
                             <div class="my-2 card-text">
                                 <small style="line-height: 1.7em">
-                                        <span v-if="r.year" class="mx-1 px-1 bg-light text-nowrap">{{ r.year.replace(/\s/g, "") }} г.в.</span>
-                                        <span v-if="r.mileage" class="mx-1 px-1 bg-light text-nowrap">{{ r.mileage }} км</span>
-                                        <span v-if="r.gear" class="mx-1 px-1 bg-light text-nowrap">{{ r.gear }}</span>
-                                        <span v-if="r.formula" class="mx-1 px-1 bg-light text-nowrap">{{ r.formula }}</span>
-                                        <span v-if="r.hp" class="mx-1 px-1 bg-light text-nowrap">{{ r.hp }} л.с.</span>
-                                        <span v-if="r.beds" class="mx-1 px-1 bg-light text-nowrap">{{ r.beds }} сп.м.</span>
-                                        <span v-if="r.location" class="mx-1 px-1 bg-light text-nowrap">{{ r.location }}</span>
+                                        <span title="Год выпуска" v-if="r.year" class="mx-1 px-1 bg-light text-nowrap">{{ r.year.replace(/\s/g, "") }} г.в.</span>
+                                        <span title="Пробег" v-if="r.mileage" class="mx-1 px-1 bg-light text-nowrap">{{ r.mileage }} км</span>
+                                        <span title="Коробка передач" v-if="r.gear" class="mx-1 px-1 bg-light text-nowrap">{{ r.gear }}</span>
+                                        <span title="Колесная формула" v-if="r.formula" class="mx-1 px-1 bg-light text-nowrap">{{ r.formula }}</span>
+                                        <span title="Мощность двигателя" v-if="r.hp" class="mx-1 px-1 bg-light text-nowrap">{{ r.hp }} л.с.</span>
+                                        <span title="Количество спальных мест" v-if="r.beds" class="mx-1 px-1 bg-light text-nowrap">{{ r.beds }} сп.м.</span>
+                                        <span title="Расположение поставщика" v-if="r.location" class="mx-1 px-1 bg-light text-nowrap">{{ r.location }}</span>
                                     </small>
                             </div>
 
                             <table class="table table-borderless table-sm my-3 text-nowrap">
-                                <tr>
+                                <tr title="Средняя рыночная цена по объявлениям с аналогичными параметрами">
                                     <td>Рыночная цена</td>
                                     <td class="num">{{ r.valuation }} р.</td>
                                 </tr>
-                                <tr>
+                                <tr title="Цена, выставленная постащиком в объявлении">
                                     <td>В объявлении</td>
                                     <td class="num">{{ r.supplierPrice }} р.</td>
                                 </tr>
-                                <tr>
+                                <tr title="Занижение цены поставщика по отношению к рыночной">
                                     <th scope="row" class="align-middle">Выгода</th>
                                     <td class="num py-2"><b><span v-bind:class="Number(r.benefit.replace(/[\,\s]/g, '')) > 0 ?
                                             'p-1 text-white bg-warning': 'p-1 bg-light'">
@@ -361,10 +361,10 @@
                                 </tr>
                             </table>
                             <div class="card-footer" v-if="(r.result == 'no_vat') || (r.result == 'no_vat_ever') || (r.result == 'ok') || (r.result == 'unclear') || r.leasePayment">
-                                <span class="badge badge-success" v-if="r.result == 'ok'">Цена с НДС</span>
-                                <span class="badge badge-danger" v-if="(r.result == 'no_vat') || (r.result == 'no_vat_ever')">Без НДС</span>
-                                <span class="badge badge-secondary" v-if="r.result == 'unclear'">НДС?</span>
-                                <a class="badge badge-info" v-if="(r.leasePayment) && (r.result != 'no_vat') && (r.result != 'no_vat_ever')" v-bind:href="'https://lp.ctrl.lc/usedtrucks?price=' + r.supplierPrice.replace(/[\s\,\.]/g, '') + '&utm_term=' + (r.vehicleType == 'Тягач' ? 'truck' : 'trailer')">
+                                <span title="Цена на объявлении указана с НДС" class="badge badge-success" v-if="r.result == 'ok'">Цена с НДС</span>
+                                <span title="Цена на объявлении указана без НДС" class="badge badge-danger" v-if="(r.result == 'no_vat') || (r.result == 'no_vat_ever')">Без НДС</span>
+                                <span title="Из текста объявления невозможно определить наличие НДС" class="badge badge-secondary" v-if="r.result == 'unclear'">НДС?</span>
+                                <a title="Кликните, чтобы больше узнать о лизинге техники с пробегом" class="badge badge-info" v-if="(r.leasePayment) && (r.result != 'no_vat') && (r.result != 'no_vat_ever')" v-bind:href="'https://lp.ctrl.lc/usedtrucks?price=' + r.supplierPrice.replace(/[\s\,\.]/g, '') + '&utm_term=' + (r.vehicleType == 'Тягач' ? 'truck' : 'trailer')">
                                         Лизинг: {{ r.leasePayment }} р./мес.
                                     </a>
                             </div>
