@@ -322,11 +322,11 @@
                 </div>
             </div>
             <div class="row" v-cloak>
-                <div v-for="r in visibleCards" class="col" :key="r.url">
+                <div v-for="(r, index) in visibleCards" class="col" :key="r.url">
                     <div class="card mx-2 my-2" v-if="r.visible">
                         <div class="card-body">
                             <h3 class="card-title" title="Кликните, чтобы посмотреть объявление">
-                                <a :href="r.url" :target="width > 480? '_blank': ''" @click="ym(61556533, 'reachGoal', 'table_click')">
+                                <a :href="r.url" :target="width > 480? '_blank': ''" @click="cardClicked(index)">
                                         {{r.make}} {{r.model}}
                                     </a>
                             </h3>

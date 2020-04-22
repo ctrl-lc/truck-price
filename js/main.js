@@ -199,6 +199,16 @@ function drawData() {
 
                 return vc
             }
+        },
+
+        methods: {
+            cardClicked: function(index) {
+                firebase.analytics().logEvent('select_content', {
+                    content_type: 'card',
+                    content_id: index,
+                    items: [{ name: `card_${index}` }]
+                });
+            }
         }
     })
 
