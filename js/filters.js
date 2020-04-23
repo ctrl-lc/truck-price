@@ -33,8 +33,10 @@ function trucksClicked() {
 }
 
 function filterChanged(delay) {
-    history.pushState(null, null, '?' + $('#form').serialize());
-    if (app) app.loading = true
+    if (delay > 0)
+        history.pushState(null, null, '?' + $('#form').serialize());
+    if (app)
+        app.loading = true
 
     // анализируем VehicleType и устанавливаем переменную selected Type
     var s = location.search.match(/VehicleType=(\d*)/);
