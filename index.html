@@ -295,7 +295,7 @@
                 <span class="sr-only">Загрузка...</span>
             </div>
             <div class="d-lg-inline float-lg-right">
-                <a class="btn btn-primary my-1" href="#" role="button" data-toggle="modal" data-target="#subscribe">
+                <a class="btn btn-primary my-1" href="#" role="button" data-toggle="modal" data-target="#subscribe" onclick="firebase.analytics().logEvent('select_content', { content_type: 'subscribe_button' });">
                 Подписаться
             </a>
                 <a class="btn btn-outline-secondary my-1" href="#" role="button" onclick="copyUrlToClipboard()">
