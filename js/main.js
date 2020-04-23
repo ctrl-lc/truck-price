@@ -202,11 +202,11 @@ function drawData() {
         },
 
         methods: {
-            cardClicked: function(index) {
+            cardClicked: function(c, index) {
                 firebase.analytics().logEvent('select_content', {
-                    content_type: 'card',
+                    content_type: (c.result ? 'card_verified' : 'card_unverified'),
                     content_id: index,
-                    items: [{ name: `card_${index}` }]
+                    items: [{ name: c.result ? c.result : 'unverified' }]
                 });
             }
         }

@@ -326,7 +326,7 @@
                     <div class="card mx-2 my-2" v-if="r.visible">
                         <div class="card-body">
                             <h3 class="card-title" title="Кликните, чтобы посмотреть объявление">
-                                <a :href="r.url" :target="width > 480? '_blank': ''" @click="cardClicked(index)">
+                                <a :href="r.url" :target="width > 480? '_blank': ''" @click="cardClicked(r, index)">
                                         {{r.make}} {{r.model}}
                                     </a>
                             </h3>
