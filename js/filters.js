@@ -69,7 +69,8 @@ function filterChanged(delay) {
                 requestData();
             }
         }, delay)
-    }
+    } else
+        updateTitle();
 }
 
 function updateTitle() {
