@@ -84,7 +84,7 @@ google.setOnLoadCallback(requestData);
 
 function requestData() {
 
-    redrawAt = Date() + 5000; // запретить перерисовку из filterChanged на 5 секунд
+    redrawAt = Date() + REDRAW_DELAY; // запретить перерисовку из filterChanged на 5 секунд
 
     //init filters from URL
 
@@ -143,6 +143,10 @@ function handleQueryResponse(response) {
 
 function drawData() {
 
+    // обнуляем
+    if (dt.length > 0)
+        dt.splice(0);
+
     // загоняем в таблу
     if (data.getNumberOfRows() > 0) {
         for (var r = 0; r < data.getNumberOfRows(); r++) {
@@ -167,50 +171,51 @@ function drawData() {
 
     dt.forEach(el => checkVisibility(el))
 
-    app = new Vue({
-        el: "#results",
-        data: {
-            cards: dt,
-            title: "",
-            width: window.innerWidth
-        },
-        computed: {
-            visibleCards: function() {
-                vc = []
-                for (let i = 0;
-                    (vc.length < 20) && (i < this.cards.length); i++)
-                    if (this.cards[i].visible)
-                        vc.push(this.cards[i])
+    if (!app)
+        app = new Vue({
+            el: "#results",
+            data: {
+                cards: dt,
+                title: "",
+                width: window.innerWidth
+            },
+            computed: {
+                visibleCards: function() {
+                    vc = []
+                    for (let i = 0;
+                        (vc.length < 20) && (i < this.cards.length); i++)
+                        if (this.cards[i].visible)
+                            vc.push(this.cards[i])
 
-                const titleEndings = [
-                    ' самое выгодное объявление',
-                    ' самых выгодных объявления',
-                    ' самых выгодных объявлений'
-                ]
+                    const titleEndings = [
+                        ' самое выгодное объявление',
+                        ' самых выгодных объявления',
+                        ' самых выгодных объявлений'
+                    ]
 
-                let l = vc.length
+                    let l = vc.length
 
-                if (l == 1)
-                    this.title = l.toString() + titleEndings[0]
-                else if ((l > 1) && (l < 5))
-                    this.title = l.toString() + titleEndings[1]
-                else
-                    this.title = l.toString() + titleEndings[2]
+                    if (l == 1)
+                        this.title = l.toString() + titleEndings[0]
+                    else if ((l > 1) && (l < 5))
+                        this.title = l.toString() + titleEndings[1]
+                    else
+                        this.title = l.toString() + titleEndings[2]
 
-                return vc
+                    return vc
+                }
+            },
+
+            methods: {
+                cardClicked: function(c, index) {
+                    firebase.analytics().logEvent('select_content', {
+                        content_type: (c.result ? 'card_verified' : 'card_unverified'),
+                        content_id: index,
+                        items: [{ name: c.result ? c.result : 'unverified' }]
+                    });
+                }
             }
-        },
-
-        methods: {
-            cardClicked: function(c, index) {
-                firebase.analytics().logEvent('select_content', {
-                    content_type: (c.result ? 'card_verified' : 'card_unverified'),
-                    content_id: index,
-                    items: [{ name: c.result ? c.result : 'unverified' }]
-                });
-            }
-        }
-    })
+        })
 
     loadNextVerificationResult();
 }

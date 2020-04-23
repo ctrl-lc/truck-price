@@ -1,28 +1,8 @@
 var selectedType;
 var redrawAt = -1;
+const REDRAW_DELAY = 1000;
 
-// анализируем VehicleType и устанавливаем переменную selected Type
-var s = location.search.match(/VehicleType=(\d*)/);
-selectedType = s && s.length > 0 ? Number(s[1] - 1) : 0;
-selectedType = (selectedType < 0) || (selectedType > 3) ? 0 : selectedType;
-$('[name=VehicleType]').get()[selectedType].checked = true;
-
-// устанавливаем чекбоксы на форме
-var checkboxes = Object.entries(getUrlVars()).filter(e => e[1] == "on");
-checkboxes.forEach(e => { $(`[name=${e[0]}]`).get()[0].checked = true; });
-
-//устанавливаем maxprice
-let mp = getUrlVars()["maxprice"]
-if (mp) {
-    $("#maxprice")[0].value = mp
-    adjustPriceLabel()
-}
-
-// обнулять и дизейблить фильтры, если выбраны полуприцепы
-if (selectedType > 0)
-    trailersClicked();
-
-updateTitle();
+filterChanged(0);
 
 function getUrlVars() {
     var vars = {};
@@ -38,9 +18,7 @@ function trailersClicked() {
         e.checked = false;
     })
 
-    $(".disableForTrailers").get().forEach(e => {
-        e.hidden = true;
-    })
+    $(".disableForTrailers").hide()
 
 }
 
@@ -49,18 +27,43 @@ function trucksClicked() {
         e.disabled = false;
     })
 
-    $(".disableForTrailers").get().forEach(e => {
-        e.hidden = false;
-    })
+    $(".disableForTrailers").show()
 
 }
 
-function filterChanged() {
-    redrawAt = Date.now() + 2999;
+function filterChanged(delay) {
+    history.pushState(null, null, '?' + $('#form').serialize());
+
+    // анализируем VehicleType и устанавливаем переменную selected Type
+    var s = location.search.match(/VehicleType=(\d*)/);
+    selectedType = s && s.length > 0 ? Number(s[1] - 1) : 0;
+    selectedType = (selectedType < 0) || (selectedType > 3) ? 0 : selectedType;
+    $('[name=VehicleType]').get()[selectedType].checked = true;
+
+    // обнулять и дизейблить фильтры, если выбраны полуприцепы
+    if (selectedType > 0)
+        trailersClicked()
+    else
+        trucksClicked()
+
+    // устанавливаем чекбоксы на форме
+    var checkboxes = Object.entries(getUrlVars()).filter(e => e[1] == "on");
+    checkboxes.forEach(e => { $(`[name=${e[0]}]`).get()[0].checked = true; });
+
+    //устанавливаем maxprice
+    let mp = getUrlVars()["maxprice"]
+    if (mp) {
+        $("#maxprice")[0].value = mp
+        adjustPriceLabel()
+    }
+
+    redrawAt = Date.now() + delay - 1;
     setTimeout(function() {
-        if (Date.now() > redrawAt)
-            $("#form").submit();
-    }, 3000)
+        if (Date.now() > redrawAt) {
+            updateTitle();
+            requestData();
+        }
+    }, delay)
 }
 
 function updateTitle() {
@@ -72,14 +75,16 @@ function updateTitle() {
         t = 'Полуприцепы'
 
     //добавляем бренд
-    window.location.href.match(/brand(\w*)/g).forEach((e, i) => {
+    let b = location.search.match(/brand(\w*)/g)
+
+    if (b) b.forEach((e, i) => {
         if (i == 0)
             t += ' ' + e.match(/brand(\w*)/)[1]
         else
             t += ', ' + e.match(/brand(\w*)/)[1]
     })
 
-    if (window.location.href.match(/leasing/))
+    if (location.search.match(/leasing/))
         t += ' в лизинг'
 
     t += ' по заниженным ценам'
@@ -94,5 +99,5 @@ function adjustPriceLabel() {
 function clearFilters() {
     $('#form input:checkbox').prop('checked', false)
     $('#maxprice')[0].value = '10000000'
-    $('#form').submit()
+    requestData()
 }
