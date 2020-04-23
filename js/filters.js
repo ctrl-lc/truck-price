@@ -1,6 +1,7 @@
 var selectedType;
 var redrawAt = -1;
 const REDRAW_DELAY = 1000;
+var app;
 
 filterChanged(0);
 
@@ -33,6 +34,7 @@ function trucksClicked() {
 
 function filterChanged(delay) {
     history.pushState(null, null, '?' + $('#form').serialize());
+    if (app) app.loading = true
 
     // анализируем VehicleType и устанавливаем переменную selected Type
     var s = location.search.match(/VehicleType=(\d*)/);
@@ -57,13 +59,15 @@ function filterChanged(delay) {
         adjustPriceLabel()
     }
 
-    redrawAt = Date.now() + delay - 1;
-    setTimeout(function() {
-        if (Date.now() > redrawAt) {
-            updateTitle();
-            requestData();
-        }
-    }, delay)
+    if (delay > 0) {
+        redrawAt = Date.now() + delay - 1;
+        setTimeout(function() {
+            if (Date.now() > redrawAt) {
+                updateTitle();
+                requestData();
+            }
+        }, delay)
+    }
 }
 
 function updateTitle() {

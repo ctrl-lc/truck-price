@@ -74,7 +74,6 @@ const schema = [{
 var visualization;
 var data;
 var blacklistedAds;
-var app;
 var dt = [];
 
 google.load('visualization', '1', {
@@ -177,7 +176,8 @@ function drawData() {
             data: {
                 cards: dt,
                 title: "",
-                width: window.innerWidth
+                width: window.innerWidth,
+                loading: false
             },
             computed: {
                 visibleCards: function() {
@@ -216,6 +216,8 @@ function drawData() {
                 }
             }
         })
+    else
+        app.loading = false
 
     loadNextVerificationResult();
 }

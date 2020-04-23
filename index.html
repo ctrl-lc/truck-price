@@ -291,6 +291,9 @@
                 <span v-once :hidden="true">20 самых выгодных объявлений</span>
                 <span v-cloak>{{title}}</span>
             </h2>
+            <div class="spinner-grow ml-2" v-if="loading" role="status">
+                <span class="sr-only">Загрузка...</span>
+            </div>
             <div class="d-lg-inline float-lg-right">
                 <a class="btn btn-primary my-1" href="#" role="button" data-toggle="modal" data-target="#subscribe">
                 Подписаться
@@ -303,9 +306,6 @@
             <div id="table" class="table">
                 <div class="p-md-5 m-md-5 m-3 p-3 bg-light" v-once :hidden="true">
                     <div class="row">
-                        <div class="spinner-grow" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
                         <div class="col"> Подождите, ищем и загружаем объявления...<br>
                             <small class="text-muted">(Если вы видите это сообщение слишком долго, то, скорее всего, на вашем устройстве проблемы с интернет-соединением. Попробуйте перезагрузить сайт.)</small>
                         </div>
