@@ -142,6 +142,8 @@ function handleQueryResponse(response) {
 
 function drawData() {
 
+    ym(61556533, "hit", location.href);
+
     // обнуляем
     if (dt.length > 0)
         dt.splice(0);
