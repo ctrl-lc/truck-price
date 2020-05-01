@@ -1,7 +1,165 @@
+const filterSchema = {
+    groups: [{
+            groupName: 'VehicleType',
+            groupTitle: 'Выберите тип транспортного средства',
+            groupType: 'radio',
+            items: [{
+                    name: 1,
+                    title: "Седельный тягач"
+                },
+                {
+                    name: 2,
+                    title: "Полуприцеп-рефрижератор"
+                },
+                {
+                    name: 3,
+                    title: "Шторный полуприцеп"
+                },
+                {
+                    name: 4,
+                    title: "Бортовой полуприцеп"
+                }
+            ]
+        },
+        {
+            groupName: 'year',
+            groupTitle: 'Год выпуска',
+            groupType: 'checkbox',
+            items: [{
+                    name: 2019,
+                    title: "2019 г.в."
+                },
+                {
+                    name: 2018,
+                    title: "2018 г.в."
+                },
+                {
+                    name: 2017,
+                    title: "2017 г.в."
+                },
+                {
+                    name: 2016,
+                    title: "2016 г.в."
+                },
+                {
+                    name: 2015,
+                    title: "2015 г.в."
+                }
+            ]
+        },
+        {
+            groupName: 'brand',
+            groupTitle: 'Марка тягача',
+            groupType: 'checkbox',
+            disableForTrailers: true,
+            items: [{
+                    name: 'VOLVO',
+                    title: 'Volvo'
+                },
+                {
+                    name: 'SCANIA',
+                    title: 'Scania'
+                },
+                {
+                    name: 'DAF',
+                    title: 'DAF'
+                },
+                {
+                    name: 'MERCEDES',
+                    title: 'Mercedes-Benz'
+                },
+                {
+                    name: 'MAN',
+                    title: 'MAN'
+                }
+            ]
+        },
+        {
+            groupName: 'brand',
+            groupTitle: 'Марка тягача',
+            groupType: 'checkbox',
+            disableForTrailers: true,
+            items: [{
+                    name: 'RENAULT',
+                    title: 'Renault'
+                },
+                {
+                    name: 'IVECO',
+                    title: 'IVECO'
+                },
+                {
+                    name: 'KAMAZ',
+                    title: 'КамАЗ'
+                },
+                {
+                    name: 'MAZ',
+                    title: 'МАЗ'
+                }
+            ]
+        },
+        {
+            groupName: 'formula',
+            groupTitle: 'Колесная формула тягача',
+            groupType: 'checkbox',
+            disableForTrailers: true,
+            items: [{
+                    name: '4x2',
+                    title: '4x2'
+                },
+                {
+                    name: '6x2',
+                    title: '6x2'
+                },
+                {
+                    name: '6x4',
+                    title: '6x4'
+                },
+                {
+                    name: '6x6',
+                    title: '6x6'
+                },
+                {
+                    name: '8x8',
+                    title: '8x8'
+                }
+            ]
+        },
+        {
+            groupName: 'beds',
+            groupTitle: 'Спальных мест в кабине тягача',
+            groupType: 'checkbox',
+            disableForTrailers: true,
+            items: [{
+                    name: '1',
+                    title: '1 спальное место'
+                },
+                {
+                    name: '2',
+                    title: '2 спальных места'
+                }
+            ]
+        },
+        {
+            groupName: 'leasingOnly',
+            groupTitle: 'Только объявления с возможностью покупки в лизинг',
+            groupType: 'checkbox',
+            items: [{
+                name: '',
+                title: 'Только с возможностью лизинга'
+            }]
+        }
+    ]
+}
+
 var selectedType;
 var redrawAt = -1;
 const REDRAW_DELAY = 1000;
 var app;
+
+var f = new Vue({
+    el: '#form',
+    data: filterSchema
+})
 
 filterChanged(0);
 
