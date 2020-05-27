@@ -75,8 +75,7 @@ function loadNextAd() {
     docs.forEach((d) => {
         if (
             (d.data().benefit > maxBenefit) &&
-            (ad.alreadyChecked.indexOf(d.id) == -1) &&
-            (d.id.match(/auto\.ru/))
+            (ad.alreadyChecked.indexOf(d.id) == -1)
         ) {
             doc = d
             maxBenefit = d.data().benefit
@@ -98,9 +97,13 @@ function loadNextAd() {
         .limit(1)
         .get()
         .then(v => {
-            ad.result = v.docs[0].data().result
-            ad.confidence = v.docs[0].data().confidence
-            console.log('doc loaded: ', ad.url)
+            if (v.docs[0]) {
+                ad.result = v.docs[0].data().result
+                ad.confidence = v.docs[0].data().confidence
+                console.log('doc loaded: ', ad.url)
+            } else {
+                console.log('doc found, but no verifications found:', ad.url)
+            }
             draw();
         })
 }
