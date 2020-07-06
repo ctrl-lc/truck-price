@@ -7,7 +7,7 @@ const schema = [{
     },
 
     {
-        name: "make",
+        name: "brand",
         gsName: "Марка",
         filterColumn: "B",
         checkboxPrefix: "brand",
@@ -73,8 +73,7 @@ const schema = [{
         gsName: "Федеральный округ",
         filterColumn: "V",
         checkboxPrefix: "fo",
-        filterQuotes: true,
-        dbNameDiffers: true
+        filterQuotes: true
     }
 
 
@@ -100,29 +99,17 @@ function requestData() {
 
     filter = `WHERE (A="${types[selectedType]}")`;
 
-    var brandTranslation = {
-        "MAZ": "МАЗ",
-        "KAMAZ": "КамАЗ",
-        "MERCEDES": "Mercedes-Benz",
-        "VOLVO": "Volvo",
-        "SCANIA": "Scania",
-        "RENAULT": "Renault"
-    }
-
     schema.filter(e => e.checkboxPrefix).forEach(group => { // для каждой группы объявлений
         var inputs = $(`[name ^= "${group.checkboxPrefix}"]:checked`).get(); // загоняем в inputs названия элементов с галочками
         if (inputs.length > 0) {
             var groupFilter = "";
             inputs.forEach(e => {
                 var s = e.name.match(`${group.checkboxPrefix}(.*)`)[1]; // выбрасываем название группы, оставляем значение для фильтрации
-                if ((group.checkboxPrefix == "brand") && (brandTranslation[s]))
-                    s = brandTranslation[s]; // переводим бренды в вид, в котором они в базе
-                if (group.dbNameDiffers)
-                    filterSchema.groups.filter((e) => e.groupName == group.name)
-                    .forEach((g) => {
-                        el = g.items.find((e) => e.name == s)
-                        if (el)
-                            s = el.dbName
+                filterSchema.groups.filter(e => e.groupName == group.name)
+                    .forEach(g => {
+                        filterSchemaItem = g.items.find(e => e.name == s)
+                        if (filterSchemaItem && filterSchemaItem.dbName)
+                            s = filterSchemaItem.dbName
                     })
                 if (group.filterQuotes)
                     s = `"${s}"`;

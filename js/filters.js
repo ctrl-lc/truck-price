@@ -54,11 +54,13 @@ const filterSchema = {
             disableForTrailers: true,
             items: [{
                     name: 'VOLVO',
-                    title: 'Volvo'
+                    title: 'Volvo',
+                    dbName: 'Volvo'
                 },
                 {
                     name: 'SCANIA',
-                    title: 'Scania'
+                    title: 'Scania',
+                    dbName: 'Scania'
                 },
                 {
                     name: 'DAF',
@@ -66,7 +68,8 @@ const filterSchema = {
                 },
                 {
                     name: 'MERCEDES',
-                    title: 'Mercedes-Benz'
+                    title: 'Mercedes-Benz',
+                    dbName: 'Mercedes-Benz'
                 },
                 {
                     name: 'MAN',
@@ -81,7 +84,8 @@ const filterSchema = {
             disableForTrailers: true,
             items: [{
                     name: 'RENAULT',
-                    title: 'Renault'
+                    title: 'Renault',
+                    dbName: 'Renault'
                 },
                 {
                     name: 'IVECO',
@@ -89,11 +93,13 @@ const filterSchema = {
                 },
                 {
                     name: 'KAMAZ',
-                    title: 'КамАЗ'
+                    title: 'КамАЗ',
+                    dbName: 'КамАЗ'
                 },
                 {
                     name: 'MAZ',
-                    title: 'МАЗ'
+                    title: 'МАЗ',
+                    dbName: 'МАЗ'
                 }
             ]
         },
