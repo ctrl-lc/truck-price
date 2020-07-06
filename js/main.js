@@ -66,7 +66,8 @@ const schema = [{
     { name: "minDownpayment", gsName: "Мин. аванс" },
     { name: "gear", gsName: "Тип КПП" },
     { name: "confidence", gsName: "Качество верификации" },
-    { name: "result", gsName: "Верификация" }
+    { name: "result", gsName: "Верификация" },
+    { name: "FO", gsName: "Федеральный округ" }
 
 
 ]
