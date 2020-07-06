@@ -67,7 +67,15 @@ const schema = [{
     { name: "gear", gsName: "Тип КПП" },
     { name: "confidence", gsName: "Качество верификации" },
     { name: "result", gsName: "Верификация" },
-    { name: "FO", gsName: "Федеральный округ" }
+
+    {
+        name: "fo",
+        gsName: "Федеральный округ",
+        filterColumn: "V",
+        checkboxPrefix: "fo",
+        filterQuotes: true,
+        dbNameDiffers: true
+    }
 
 
 ]
@@ -109,6 +117,13 @@ function requestData() {
                 var s = e.name.match(`${group.checkboxPrefix}(.*)`)[1]; // выбрасываем название группы, оставляем значение для фильтрации
                 if ((group.checkboxPrefix == "brand") && (brandTranslation[s]))
                     s = brandTranslation[s]; // переводим бренды в вид, в котором они в базе
+                if (group.dbNameDiffers)
+                    filterSchema.groups.filter((e) => e.groupName == group.name)
+                    .forEach((g) => {
+                        el = g.items.find((e) => e.name == s)
+                        if (el)
+                            s = el.dbName
+                    })
                 if (group.filterQuotes)
                     s = `"${s}"`;
                 if (groupFilter == "")
