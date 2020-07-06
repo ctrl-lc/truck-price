@@ -140,6 +140,63 @@ const filterSchema = {
             ]
         },
         {
+            groupName: 'fo',
+            groupTitle: 'Федеральный округ',
+            groupType: 'checkbox',
+            items: [{
+                    name: 'CFO',
+                    title: 'Центральный ФО',
+                    dbName: 'ЦФО'
+                },
+                {
+                    name: 'SZFO',
+                    title: 'Северо-Западный ФО',
+                    dbName: 'СЗФО'
+                },
+                {
+                    name: 'YUFO',
+                    title: 'Южный ФО',
+                    dbName: 'ЮФО'
+                },
+                {
+                    name: 'PFO',
+                    title: 'Поволжский ФО',
+                    dbName: 'ПФО'
+                },
+                {
+                    name: 'UFO',
+                    title: 'Уральский ФО',
+                    dbName: 'УФО'
+                }
+            ]
+        },
+        {
+            groupName: 'fo',
+            groupTitle: 'Федеральный округ',
+            groupType: 'checkbox',
+            items: [{
+                    name: 'SFO',
+                    title: 'Сибирский ФО',
+                    dbName: 'СФО'
+                },
+                {
+                    name: 'DVFO',
+                    title: 'Дальневосточный ФО',
+                    dbName: 'ДВФО'
+                },
+                {
+                    name: 'SKFO',
+                    title: 'Северокавказский ФО',
+                    dbName: 'СКФО'
+                },
+                {
+                    name: 'KFO',
+                    title: 'Крымский ФО',
+                    dbName: 'КФО'
+                }
+            ]
+        },
+        {
             groupName: 'leasingOnly',
             groupTitle: 'Только объявления с возможностью покупки в лизинг',
             groupType: 'checkbox',
