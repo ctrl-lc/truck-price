@@ -146,7 +146,7 @@ const filterSchema = {
             ]
         },
         {
-            groupName: 'fo',
+            groupName: 'federal_district',
             groupTitle: 'Федеральный округ',
             groupType: 'checkbox',
             items: [{

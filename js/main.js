@@ -69,10 +69,10 @@ const schema = [{
     { name: "result", gsName: "Верификация" },
 
     {
-        name: "fo",
+        name: "federal_district",
         gsName: "Федеральный округ",
         filterColumn: "V",
-        checkboxPrefix: "fo",
+        checkboxPrefix: "federal_district",
         filterQuotes: true
     }
 
