@@ -84,9 +84,7 @@ var data;
 var blacklistedAds;
 var dt = [];
 
-google.load('visualization', '1', {
-    packages: ['table']
-});
+google.charts.load('47', { 'packages': ['table'] });
 google.setOnLoadCallback(requestData);
 
 function requestData() {
@@ -94,8 +92,6 @@ function requestData() {
     redrawAt = Date() + REDRAW_DELAY; // запретить перерисовку из filterChanged на 5 секунд
 
     //init filters from URL
-
-    var query = new google.visualization.Query('https://spreadsheets.google.com/tq?key=1Hcc4ay2SZu1gImUljdbTVgw3GEaJrz-7IerNWcZDRzU&output=html&usp=sharing');
 
     filter = `WHERE (A="${types[selectedType]}")`;
 
@@ -130,7 +126,8 @@ function requestData() {
     queryString = `SELECT * ${filter} LIMIT 40`
     console.log(queryString);
     firebase.analytics().logEvent('search', { search_term: queryString });
-    query.setQuery(queryString);
+    var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1Hcc4ay2SZu1gImUljdbTVgw3GEaJrz-7IerNWcZDRzU/gviz/tq?gid=0&headers=1&tq=' +
+        encodeURIComponent(queryString));
     query.send(handleQueryResponse);
 }
 
