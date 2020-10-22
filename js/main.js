@@ -186,8 +186,15 @@ function drawData() {
                     vc = []
                     for (let i = 0;
                         (vc.length < 20) && (i < this.cards.length); i++)
-                        if (this.cards[i].visible)
-                            vc.push(this.cards[i])
+                        if (this.cards[i].visible) {
+                            let card = this.cards[i]
+                                // убираем пробелы из числовых обозначений модели
+                            let model = card.model
+                            if (model)
+                                card.model = card.model.replace(/(?<=\d)\s(?=\d)/, '')
+
+                            vc.push(card)
+                        }
 
                     const titleEndings = [
                         ' самое выгодное объявление',
