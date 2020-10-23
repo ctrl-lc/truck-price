@@ -71,7 +71,7 @@ const schema = [{
     {
         name: "federal_district",
         gsName: "Федеральный округ",
-        filterColumn: "V",
+        filterColumn: "W",
         checkboxPrefix: "federal_district",
         filterQuotes: true
     }
