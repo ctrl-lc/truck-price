@@ -1,3 +1,5 @@
+console.log('main.js запускается')
+
 const types = ["Тягач", "Рефрижератор", "Шторный", "Бортовой"]
 
 const schema = [{
@@ -87,7 +89,11 @@ var dt = [];
 google.charts.load('47', { 'packages': ['table'] });
 google.setOnLoadCallback(requestData);
 
+console.log('Ждем загрузки google charts')
+
 function requestData() {
+
+    console.log('Запущен requestData()')
 
     redrawAt = Date() + REDRAW_DELAY; // запретить перерисовку из filterChanged на 5 секунд
 

@@ -1,3 +1,5 @@
+console.log('filter.js запускается')
+
 const filterSchema = {
     groups: [{
             groupName: 'VehicleType',
