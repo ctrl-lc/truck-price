@@ -149,7 +149,7 @@
                                 E-mail для подписки не может быть пустым.
                             </div>
                             <small id="emailHelp" class="form-text text-muted">
-                                Введите e-mail, на который каждое утро будут приходить 
+                                Введите e-mail, на который каждое утро будут приходить
                                 новые объявления по выбранному вами фильтру.
                             </small>
                         </div>
@@ -378,7 +378,15 @@
     <!-- jivosite code -->
     <script async src="https://code-ya.jivosite.com/widget/eV5AoUco3H"></script>
 
-
+    <script>
+        ;
+        (function() {
+            var src = 'https://cdn.jsdelivr.net/npm/eruda';
+            if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+            document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+            document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+        })();
+    </script>
 </body>
 
 </html>
