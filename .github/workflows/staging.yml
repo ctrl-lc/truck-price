@@ -24,7 +24,7 @@ jobs:
 
     - name: Copy files from js/
       run: |
-        cp -r js/* staging/
+        cp -r -preserve-parents js staging/js
 
     - name: Commit
       run: |
