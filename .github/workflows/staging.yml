@@ -1,0 +1,40 @@
+name: Copy code to /staging
+
+on:
+  push:
+    branches: [ staging ]
+  pull_request:
+    branches: [ staging ]
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Clean staging directory
+      run: |
+        if [ -d staging ]; then rm -rf staging; fi
+        mkdir staging
+
+    - name: Copy html files from root
+      run: |
+        cp *.html staging/
+
+    - name: Copy files from js/
+      run: |
+        cp -r js/* staging/
+
+    - name: Commit
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "Github Action"
+        git add staging/*
+        git commit -m "Copy to staging"
+
+    - name: Push
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: master
