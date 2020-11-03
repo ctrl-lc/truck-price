@@ -86,7 +86,7 @@ var data;
 var blacklistedAds;
 var dt = [];
 
-google.charts.load('47', { 'packages': ['table'] });
+google.charts.load('current', { 'packages': ['table'] });
 google.setOnLoadCallback(requestData);
 
 console.log('Ждем загрузки google charts')
