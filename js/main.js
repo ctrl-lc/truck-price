@@ -1,17 +1,15 @@
-console.log('main.js запускается')
+console.debug('main.js запускается')
 
 const types = ["Тягач", "Рефрижератор", "Шторный", "Бортовой"]
 
-const schema = [{
+var schema = [{
         name: "vehicleType",
         gsName: "Тип ТС",
-        filterColumn: "A"
     },
 
     {
         name: "brand",
         gsName: "Марка",
-        filterColumn: "B",
         checkboxPrefix: "brand",
         filterQuotes: true
     },
@@ -21,7 +19,6 @@ const schema = [{
     {
         name: "year",
         gsName: "Год выпуска",
-        filterColumn: "D",
         checkboxPrefix: "year",
         filterQuotes: false
     },
@@ -29,7 +26,6 @@ const schema = [{
     {
         name: "supplierPrice",
         gsName: "Цена поставщика",
-        filterColumn: "E"
     },
 
     { name: "location", gsName: "Регион склада" },
@@ -39,7 +35,6 @@ const schema = [{
     {
         name: "formula",
         gsName: "Колесная формула",
-        filterColumn: "J",
         checkboxPrefix: "formula",
         filterQuotes: true
     },
@@ -50,7 +45,6 @@ const schema = [{
     {
         name: "beds",
         gsName: "Спальных мест",
-        filterColumn: "M",
         checkboxPrefix: "beds",
         filterQuotes: false
     },
@@ -58,7 +52,6 @@ const schema = [{
     {
         name: "leasePayment",
         gsName: "Лизинговый платеж 0% / 48 мес.",
-        filterColumn: "S"
     },
 
     { name: "supplier", gsName: "Поставщик" },
@@ -73,13 +66,14 @@ const schema = [{
     {
         name: "federal_district",
         gsName: "Федеральный округ",
-        filterColumn: "W",
         checkboxPrefix: "federal_district",
         filterQuotes: true
     }
 
 
 ]
+
+const WEBHOOK = 'https://docs.google.com/spreadsheets/d/1Hcc4ay2SZu1gImUljdbTVgw3GEaJrz-7IerNWcZDRzU/gviz/tq?'
 
 var visualization;
 var data;
@@ -89,19 +83,29 @@ var dt = [];
 google.charts.load('47', { 'packages': ['table'] });
 google.setOnLoadCallback(requestData);
 
-console.log('Ждем загрузки google charts')
+console.debug('Ждем загрузки google charts')
 
-function requestData() {
+async function requestData() {
 
-    console.log('Запущен requestData()')
+    console.debug('Запущен requestData()')
 
     redrawAt = Date() + REDRAW_DELAY; // запретить перерисовку из filterChanged на 5 секунд
 
-    //init filters from URL
+    await findColumns();
 
-    filter = `WHERE (A="${types[selectedType]}")`;
+    let queryString = prepareQueryString();
 
-    schema.filter(e => e.checkboxPrefix).forEach(group => { // для каждой группы объявлений
+    firebase.analytics().logEvent('search', { search_term: queryString });
+    data = await getDataTable(WEBHOOK + 'gid=0&headers=1&tq=' + encodeURIComponent(queryString));
+
+    drawData();
+}
+
+
+function prepareQueryString() {
+    let filter = `WHERE (${schema[0].filterColumn}="${types[selectedType]}")`;
+
+    schema.filter(e => e.checkboxPrefix).forEach(group => {
         var inputs = $(`[name ^= "${group.checkboxPrefix}"]:checked`).get(); // загоняем в inputs названия элементов с галочками
         if (inputs.length > 0) {
             var groupFilter = "";
@@ -109,42 +113,68 @@ function requestData() {
                 var s = e.name.match(`${group.checkboxPrefix}(.*)`)[1]; // выбрасываем название группы, оставляем значение для фильтрации
                 filterSchema.groups.filter(e => e.groupName == group.name)
                     .forEach(g => {
-                        filterSchemaItem = g.items.find(e => e.name == s)
+                        filterSchemaItem = g.items.find(e => e.name == s);
                         if (filterSchemaItem && filterSchemaItem.dbName)
-                            s = filterSchemaItem.dbName
-                    })
+                            s = filterSchemaItem.dbName;
+                    });
                 if (group.filterQuotes)
                     s = `"${s}"`;
                 if (groupFilter == "")
-                    groupFilter = `(${group.filterColumn} = ${s})`
+                    groupFilter = `(${group.filterColumn} = ${s})`;
+
                 else
-                    groupFilter = `${groupFilter} OR (${group.filterColumn} = ${s})`
+                    groupFilter = `${groupFilter} OR (${group.filterColumn} = ${s})`;
             });
-            filter = `${filter} AND (${groupFilter})`
+            filter = `${filter} AND (${groupFilter})`;
         }
     });
 
     if ($('[name = "leasingOnly"]')[0].checked)
-        filter = `${filter} AND (${schema.find(el => el.name == "leasePayment").filterColumn} > 0)`
+        filter = `${filter} AND (${schema.find(el => el.name == "leasePayment").filterColumn} > 0)`;
 
-    filter += ` AND (${schema.find(el => el.name == "supplierPrice").filterColumn} <= ${$("#maxprice")[0].value})`
+    filter += ` AND (${schema.find(el => el.name == "supplierPrice").filterColumn} <= ${$("#maxprice")[0].value})`;
 
-    queryString = `SELECT * ${filter} LIMIT 40`
-    console.log(queryString);
-    firebase.analytics().logEvent('search', { search_term: queryString });
-    var query = new google.visualization.Query('https://docs.google.com/spreadsheets/d/1Hcc4ay2SZu1gImUljdbTVgw3GEaJrz-7IerNWcZDRzU/gviz/tq?gid=0&headers=1&tq=' +
-        encodeURIComponent(queryString));
-    query.send(handleQueryResponse);
+    let queryString = `SELECT * ${filter} LIMIT 40`;
+    console.debug(queryString);
+
+    return queryString
 }
 
-function handleQueryResponse(response) {
-    if (response.isError()) {
-        alert('There was a problem with your query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
-        return;
+
+async function findColumns() {
+    var headerTable = await getDataTable(WEBHOOK + 'gid=0&headers=0&range=' + encodeURIComponent('1:1'))
+    for (let col = 0; col < headerTable.getNumberOfColumns(); col++) {
+        const colLiterals = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        let colName = headerTable.getValue(0, col)
+        if (colName) {
+            let schemaElement = schema.find(e => e.gsName == colName)
+            if (schemaElement)
+                schemaElement.filterColumn = colLiterals[col]
+        }
     }
-    data = response.getDataTable();
-    drawData();
+
+    let orphanCols = schema.filter(e => e.checkboxPrefix && !e.filterColumn)
+    if (orphanCols.length > 0)
+        alert(orphanCols.length + ' столбцов фильтра не найдено')
+    firebase.analytics().logEvent('error'); // TODO:не уверен, что это работает
 }
+
+
+async function getDataTable(queryString) {
+    var query = new google.visualization.Query(queryString)
+    return new Promise((resolve, reject) => {
+        query.send(response => {
+            if (response.isError()) {
+                var el = document.createElement('html');
+                el.innerHTML = response.getDetailedMessage();
+                alert('There was a problem with your query: ' + response.getMessage() + ' ' + el.textContent);
+                return;
+            } else
+                resolve(response.getDataTable())
+        })
+    })
+}
+
 
 function drawData() {
 
@@ -166,7 +196,7 @@ function drawData() {
                         v = new Intl.NumberFormat("ru-ru").format(v)
                     row[key] = v
                 } catch (err) {
-                    console.log(`Не смогли найти ключ ${data.getColumnLabel(c)}`)
+                    console.debug(`Не смогли найти ключ ${data.getColumnLabel(c)}`)
                 }
 
             }
@@ -242,7 +272,7 @@ function loadNextVerificationResult() {
     // для экономии квоты по запросам к firestore вываливаемся, когда все видимые карточки проверены
 
     if (dt.filter(dt_el => dt_el.checked && dt_el.visible).length >= 20) {
-        console.log(`${dt.filter(e => e.checked).length} checked to provide ${Math.min (20, dt.filter(e => e.visible).length)} visible cards`)
+        console.debug(`${dt.filter(e => e.checked).length} checked to provide ${Math.min (20, dt.filter(e => e.visible).length)} visible cards`)
         return;
     }
 
