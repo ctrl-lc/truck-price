@@ -1,7 +1,5 @@
 name: Copy code to /staging
 
-name: deploy_to_firebase_hosting
-
 on:
   push:
     branches: [ staging ]
