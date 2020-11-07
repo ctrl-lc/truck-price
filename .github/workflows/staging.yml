@@ -1,5 +1,7 @@
 name: Copy code to /staging
 
+name: deploy_to_firebase_hosting
+
 on:
   push:
     branches: [ staging ]
@@ -7,34 +9,17 @@ on:
     branches: [ staging ]
 
 jobs:
-  copy:
+  deploy_to_firebase_hosting:
+
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - name: Checkout the repository
+        uses: actions/checkout@master
 
-    - name: Clean staging directory
-      run: |
-        if [ -d staging ]; then rm -rf staging; fi
-        mkdir staging
-
-    - name: Copy html files from root
-      run: |
-        cp *.html staging/
-
-    - name: Copy files from js/
-      run: |
-        cp -r js staging/js
-
-    - name: Commit
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "Github Action"
-        git add staging/*
-        git commit -m "Copy to staging"
-
-    - name: Push
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: master
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
