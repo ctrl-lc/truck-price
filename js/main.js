@@ -154,10 +154,8 @@ function drawData() {
                         if (this.cards[i].visible) {
                             let card = this.cards[i]
                                 // убираем пробелы из числовых обозначений модели
-                            let model = card.model
-                            if (model)
-                                card.model = card.model.replace(/(?<=\d)\s(?=\d)/, '')
-
+                            if (card.model && !/[^\d\s]/.test(card.model))
+                                card.model = card.model.replace(/(\d)(\s)(\d)/, '$1$3')
                             vc.push(card)
                         }
 
