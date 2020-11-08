@@ -1,3 +1,4 @@
 *.log
 firebase-tools-instant-win.exe
 .firebaserc
+.vscode/*
