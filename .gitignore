@@ -1,1 +1,4 @@
-debug.log
+*.log
+firebase-tools-instant-win.exe
+.firebaserc
+firebase.json
