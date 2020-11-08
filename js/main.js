@@ -2,77 +2,6 @@ console.debug('main.js запускается')
 
 const types = ["Тягач", "Рефрижератор", "Шторный", "Бортовой"]
 
-var schema = [{
-        name: "vehicleType",
-        gsName: "Тип ТС",
-    },
-
-    {
-        name: "brand",
-        gsName: "Марка",
-        checkboxPrefix: "brand",
-        filterQuotes: true
-    },
-
-    { name: "model", gsName: "Модель" },
-
-    {
-        name: "year",
-        gsName: "Год выпуска",
-        checkboxPrefix: "year",
-        filterQuotes: false
-    },
-
-    {
-        name: "supplierPrice",
-        gsName: "Цена поставщика",
-    },
-
-    { name: "location", gsName: "Регион склада" },
-    { name: "url", gsName: "URL авто" },
-    { name: "mileage", gsName: "Пробег" },
-
-    {
-        name: "formula",
-        gsName: "Колесная формула",
-        checkboxPrefix: "formula",
-        filterQuotes: true
-    },
-
-    { name: "hp", gsName: "Мощность двигателя" },
-    { name: "seats", gsName: "Сидений" },
-
-    {
-        name: "beds",
-        gsName: "Спальных мест",
-        checkboxPrefix: "beds",
-        filterQuotes: false
-    },
-
-    {
-        name: "leasePayment",
-        gsName: "Лизинговый платеж 0% / 48 мес.",
-    },
-
-    { name: "supplier", gsName: "Поставщик" },
-    { name: "valuation", gsName: "Наша расчетная цена" },
-    { name: "benefit", gsName: "Выгода" },
-    { name: "recommendation", gsName: "Рекомендация" },
-    { name: "minDownpayment", gsName: "Мин. аванс" },
-    { name: "gear", gsName: "Тип КПП" },
-    { name: "confidence", gsName: "Качество верификации" },
-    { name: "result", gsName: "Верификация" },
-
-    {
-        name: "federal_district",
-        gsName: "Федеральный округ",
-        checkboxPrefix: "federal_district",
-        filterQuotes: true
-    }
-
-
-]
-
 const WEBHOOK = 'https://docs.google.com/spreadsheets/d/1Hcc4ay2SZu1gImUljdbTVgw3GEaJrz-7IerNWcZDRzU/gviz/tq?'
 
 var visualization;
@@ -301,10 +230,10 @@ function loadNextVerificationResult() {
                 loadNextVerificationResult(); // этого проверили, берем следующего
             })
             .catch(function(error) {
-                console.log("Error getting the document: ", error);
+                console.debug("Error getting the document: ", error);
             });
     } else {
-        console.log(`${dt.filter(e => e.checked).length} checked to provide ${Math.min (20, dt.filter(e => e.visible).length)} visible cards`)
+        console.debug(`${dt.filter(e => e.checked).length} checked to provide ${Math.min (20, dt.filter(e => e.visible).length)} visible cards`)
     }
 }
 
