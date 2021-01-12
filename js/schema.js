@@ -97,6 +97,10 @@ const filterSchema = {
             groupTitle: 'Год выпуска',
             groupType: 'checkbox',
             items: [{
+                    name: 2020,
+                    title: "2020 г.в."
+                },
+                {
                     name: 2019,
                     title: "2019 г.в."
                 },
@@ -111,10 +115,6 @@ const filterSchema = {
                 {
                     name: 2016,
                     title: "2016 г.в."
-                },
-                {
-                    name: 2015,
-                    title: "2015 г.в."
                 }
             ]
         },
