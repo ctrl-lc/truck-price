@@ -245,7 +245,9 @@
                                 <span title="Цена на объявлении указана с НДС" class="badge badge-success" v-if="r.result == 'ok'">Цена с НДС</span>
                                 <span title="Цена на объявлении указана без НДС" class="badge badge-danger" v-if="(r.result == 'no_vat') || (r.result == 'no_vat_ever')">Без НДС</span>
                                 <span title="Из текста объявления невозможно определить наличие НДС" class="badge badge-secondary" v-if="r.result == 'unclear'">НДС?</span>
-                                <a title="Кликните, чтобы больше узнать о лизинге техники с пробегом" class="badge badge-info" v-if="(r.leasePayment) && (r.result != 'no_vat') && (r.result != 'no_vat_ever')" v-bind:href="'https://lp.ctrl.lc/usedtrucks?price=' + r.supplierPrice.replace(/[\s\,\.]/g, '') + '&utm_term=' + (r.vehicleType == 'Тягач' ? 'truck' : 'trailer')">
+                                <a title="Кликните, чтобы больше узнать о лизинге техники с пробегом" class="badge badge-info" 
+                                    v-if="(r.leasePayment) && (r.result != 'no_vat') && (r.result != 'no_vat_ever')" 
+                                    v-bind:href="'https://lp.ctrl.lc/usedtrucks?utm_source=truckprice&price=' + r.supplierPrice.replace(/[\s\,\.]/g, '') + '&utm_term=' + (r.vehicleType == 'Тягач' ? 'truck' : 'trailer')">
                                         Лизинг: {{ r.leasePayment }} р./мес.
                                     </a>
                             </div>
